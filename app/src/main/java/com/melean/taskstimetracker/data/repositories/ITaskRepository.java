@@ -8,10 +8,9 @@ import java.util.List;
 
 public interface ITaskRepository {
 
-    void saveTask();
+    void saveTask(String employeeName, String taskName, long secondsWorked, boolean isInterrupted);
 
     interface LoadTasksCallback {
-
         void onNotesLoaded(List<TaskEntity> tasks);
     }
 

@@ -7,19 +7,17 @@ import com.melean.taskstimetracker.recordTasks.RecordTaskPresenter;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.TestCase.assertEquals;
+import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 
 public class RecordTaskPresenterTests {
-    private List<TaskEntity> tasks = new ArrayList<>();
-    private static List<TaskEntity> EMPTY_TASKS = new ArrayList<>(0);
-
     @Mock
     private ITaskRepository mRecordTaskRepository;
 
@@ -33,13 +31,7 @@ public class RecordTaskPresenterTests {
     }
 
     @Before
-    public  void initData(){
-        //put some tasks
-        tasks.add(new TaskEntity());
-        tasks.add(new TaskEntity());
-        tasks.add(new TaskEntity());
-
-
+    public void initData() {
         //init mockito
         MockitoAnnotations.initMocks(this);
 
@@ -47,7 +39,7 @@ public class RecordTaskPresenterTests {
         mRecordTaskPresenter = new RecordTaskPresenter(mRecordTasksView, mRecordTaskRepository);
     }
 
-       @Test
+    @Test
     public void onClick_StartRecord_Should_Be_Fine() {
         mRecordTaskPresenter.isRecording = false;
         mRecordTaskPresenter.startRecording();
@@ -67,8 +59,23 @@ public class RecordTaskPresenterTests {
         mRecordTaskPresenter.isRecording = true;
         mRecordTaskPresenter.stopRecording();
         verify(mRecordTasksView).stopTimeCounter();
-        verify(mRecordTasksView).makeTask();
-        verify(mRecordTaskRepository).saveTask(mRecordTasksView.makeTask());
+
+        ArgumentCaptor<String> employeeArgument = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> taskNameArgument = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Long> timeWorkedArgument = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<Boolean> isInterruptedArgument = ArgumentCaptor.forClass(Boolean.class);
+
+        verify(mRecordTaskRepository).saveTask(
+                employeeArgument.capture(),
+                taskNameArgument.capture(),
+                timeWorkedArgument.capture(),
+                isInterruptedArgument.capture()
+        );
+
+        assertEquals(mRecordTasksView.getEmployeeName(),employeeArgument.getValue());
+        assertEquals(mRecordTasksView.getTaskName(),taskNameArgument.getValue());
+        assertEquals(Long.valueOf(mRecordTasksView.getSecondsWorked()), timeWorkedArgument.getValue());
+        assertEquals(Boolean.valueOf(mRecordTasksView.isInterrupted()), isInterruptedArgument.getValue());
     }
 
     @Test

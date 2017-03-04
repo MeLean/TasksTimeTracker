@@ -19,9 +19,13 @@ public interface RecordTaskContract {
 
         void showEmployeePicker();
 
-        TaskEntity makeTask();
+        String getEmployeeName();
 
-        boolean isTaskInterrupted();
+        String getTaskName();
+
+        long getSecondsWorked();
+
+        boolean isInterrupted();
     }
 
     interface UserActionsListener {

@@ -12,11 +12,9 @@ import com.melean.taskstimetracker.data.database.RealmObjects.TaskEntity;
 
 public class RecordTaskFragment extends Fragment implements RecordTaskContract.View {
 
-
     public RecordTaskFragment() {
         // Required empty public constructor
     }
-
 
     public static RecordTaskFragment newInstance() {
         return new RecordTaskFragment();
@@ -60,12 +58,22 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
     }
 
     @Override
-    public TaskEntity makeTask() {
-        return new TaskEntity();
+    public String getEmployeeName() {
+        return null;
     }
 
     @Override
-    public boolean isTaskInterrupted() {
+    public String getTaskName() {
+        return null;
+    }
+
+    @Override
+    public long getSecondsWorked() {
+        return 0;
+    }
+
+    @Override
+    public boolean isInterrupted() {
         return false;
     }
 }
