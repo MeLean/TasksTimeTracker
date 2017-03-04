@@ -1,6 +1,5 @@
 package com.melean.taskstimetracker;
 
-import com.melean.taskstimetracker.data.database.RealmObjects.TaskEntity;
 import com.melean.taskstimetracker.data.repositories.ITaskRepository;
 import com.melean.taskstimetracker.recordTasks.RecordTaskContract;
 import com.melean.taskstimetracker.recordTasks.RecordTaskPresenter;
@@ -10,9 +9,6 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -46,7 +42,6 @@ public class RecordTaskPresenterTests {
         verify(mRecordTasksView).startTimeCounter();
     }
 
-
     @Test
     public void onClick_StartRecord_Should_Show_Error() {
         mRecordTaskPresenter.isRecording = true;
@@ -65,15 +60,15 @@ public class RecordTaskPresenterTests {
         ArgumentCaptor<Long> timeWorkedArgument = ArgumentCaptor.forClass(Long.class);
         ArgumentCaptor<Boolean> isInterruptedArgument = ArgumentCaptor.forClass(Boolean.class);
 
-        verify(mRecordTaskRepository).saveTask(
+        verify(mRecordTaskRepository).makeTask(
                 employeeArgument.capture(),
                 taskNameArgument.capture(),
                 timeWorkedArgument.capture(),
                 isInterruptedArgument.capture()
         );
 
-        assertEquals(mRecordTasksView.getEmployeeName(),employeeArgument.getValue());
-        assertEquals(mRecordTasksView.getTaskName(),taskNameArgument.getValue());
+        assertEquals(mRecordTasksView.getEmployeeName(), employeeArgument.getValue());
+        assertEquals(mRecordTasksView.getTaskName(), taskNameArgument.getValue());
         assertEquals(Long.valueOf(mRecordTasksView.getSecondsWorked()), timeWorkedArgument.getValue());
         assertEquals(Boolean.valueOf(mRecordTasksView.isInterrupted()), isInterruptedArgument.getValue());
     }

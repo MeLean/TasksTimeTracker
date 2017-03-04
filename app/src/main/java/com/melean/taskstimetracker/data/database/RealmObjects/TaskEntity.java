@@ -2,10 +2,14 @@ package com.melean.taskstimetracker.data.database.RealmObjects;
 
 import java.util.Locale;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
-public class TaskEntity {//extends RealmObject{
 
-/*    @PrimaryKey
+public class TaskEntity extends RealmObject {
+
+    @PrimaryKey
     private int _id;
     @Required
     private String employeeName;
@@ -96,5 +100,5 @@ public class TaskEntity {//extends RealmObject{
                 (isNotInterrupted() ? "is not interrupted" : "is interrupted"),
                 this.getDateAdded()
         );
-    }*/
+    }
 }

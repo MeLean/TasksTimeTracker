@@ -31,7 +31,7 @@ public class RecordTaskPresenter implements RecordTaskContract.UserActionsListen
             recordTaskView.stopTimeCounter();
             isRecording = false;
 
-            taskRepository.saveTask(
+            taskRepository.makeTask(
                     recordTaskView.getEmployeeName(),
                     recordTaskView.getTaskName(),
                     recordTaskView.getSecondsWorked(),
