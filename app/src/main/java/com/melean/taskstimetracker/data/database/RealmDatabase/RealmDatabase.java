@@ -38,8 +38,12 @@ public class RealmDatabase {
         return list;
     }
 
-    public synchronized <T extends RealmObject> List<T> findAll(Class<T> clazz) {
-          return getRealmInstance().copyFromRealm(getRealmInstance().where(clazz).findAll());
+    public synchronized <T extends RealmObject> RealmResults<T> findAll(Class<T> clazz) {
+          return getRealmInstance().where(clazz).findAll();
+    }
+
+    public synchronized <T extends RealmObject> List<T> getAll(Class<T> clazz) {
+        return getRealmInstance().copyFromRealm(findAll(clazz));
     }
 
     public synchronized <T extends RealmObject> RealmResults<T> findAllByProperty(Class<T> clazz, String propertyName, Object propertyValue) {

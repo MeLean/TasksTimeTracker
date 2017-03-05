@@ -25,14 +25,16 @@ public class TaskRepositoryImplementation implements ITaskRepository{
     }
 
     @Override
-    public void getAllTasks(@NonNull GetAllTasksCallback callback) {
-        List<TaskEntity> results = mRealmDatabase.findAll(TaskEntity.class);
+    public void getAllTasks(@NonNull ITaskRepository.GetAllTasksCallback callback) {
+        List<TaskEntity> results = mRealmDatabase.getAll(TaskEntity.class);
         callback.onTasksLoaded(results);
     }
 
     @Override
-    public void getTask(int taskId, @NonNull GetTaskCallback callback) {
-
+    public void getTask(int taskId, @NonNull ITaskRepository.GetTaskCallback callback) {
+        TaskEntity result =
+                mRealmDatabase.findAllByProperty(TaskEntity.class, "id", taskId).get(0);
+        callback.onTaskLoaded(result);
     }
 
     @Override
