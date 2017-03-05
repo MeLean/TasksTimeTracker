@@ -48,6 +48,9 @@ public class RealmDatabase {
 
     public synchronized <T extends RealmObject> RealmResults<T> findAllByProperty(Class<T> clazz, String propertyName, Object propertyValue) {
         //add more cases if needed
+
+        // todo try to change if with:
+        // return getRealmInstance().where(clazz).equalTo(propertyName, (propertyValue.getClass()) propertyValue).findAll();
         if(propertyValue instanceof Integer) {
             return getRealmInstance().where(clazz).equalTo(propertyName, (Integer) propertyValue).findAll();
         }else if(propertyValue instanceof String){

@@ -83,49 +83,39 @@ public class TaskRepositoryTests {
         verify(mMockedRealmDatabase).addAll(mTestListTaskEntities);
     }
 
-   /*  @Test
+     @Test
     public void onGetTask_ShouldGetTask() {
-        ArgumentCaptor<TaskRepositoryImplementation.GetTaskCallback> getTaskCaptor =
-                ArgumentCaptor.forClass(TaskRepositoryImplementation.GetTaskCallback.class);
-        ArgumentCaptor<Integer> idCaptor = ArgumentCaptor.forClass(Integer.class);
+         when(mMockedRealmDatabase.findAllByProperty(TaskEntity.class, "id", 1))
+                 .thenAnswer(new Answer<TaskEntity>() {
+                     @Override
+                     public TaskEntity answer(InvocationOnMock invocation) throws Throwable {
+                         return mTestListTaskEntities.get(1);
+                     }
+                 });
 
-        mTaskRepository.getTask(1, new ITaskRepository.GetTaskCallback() {
+         mTaskRepository.getTask(1, new ITaskRepository.GetTaskCallback() {
             @Override
             public void onTaskLoaded(TaskEntity task) {
-                //do nothing
+                assertEquals(mTestListTaskEntities.get(1), task);
             }
         });
-
-        verify(mMockedRealmDatabase).findAllByProperty(TaskEntity.class, "id", 1);
-        when(mMockedRealmDatabase.findAllByProperty(TaskEntity.class, "id", 1).get(0))
-                .thenAnswer(new Answer<TaskEntity>() {
-            @Override
-            public TaskEntity answer(InvocationOnMock invocation) throws Throwable {
-                return mTestListTaskEntities.get(1);
-            }
-        });
-
-        assertEquals(mTestListTaskEntities, getTaskCaptor.getValue());
-
-    }*/
+    }
 
     @Test
     public void onGetAllTasks_ShouldSaveTasks() {
-        ArgumentCaptor<ITaskRepository.GetAllTasksCallback> getTasksCaptor =
-                ArgumentCaptor.forClass(ITaskRepository.GetAllTasksCallback.class);
-
-        mTaskRepository.getAllTasks(getTasksCaptor.capture());
-        getTasksCaptor.capture().onTasksLoaded(listCaptor.capture());
-        when(mMockedRealmDatabase.findAll(TaskEntity.class)).thenAnswer(new Answer<List<TaskEntity>>() {
+        when(mMockedRealmDatabase.getAll(TaskEntity.class)).thenAnswer(new Answer<List<TaskEntity>>() {
             @Override
             public List<TaskEntity> answer(InvocationOnMock invocation) throws Throwable {
-         /*       Object[] args = invocation.getArguments();
-                return (List<TaskEntity>) args[0];*/
                 return mTestListTaskEntities;
             }
         });
 
-        assertEquals(mTestListTaskEntities, listCaptor.getValue());
+        mTaskRepository.getAllTasks(new ITaskRepository.GetAllTasksCallback() {
+            @Override
+            public void onTasksLoaded(List<TaskEntity> tasks) {
+                assertEquals(mTestListTaskEntities, tasks);
+            }
+        });
     }
 
 }
