@@ -36,21 +36,21 @@ public class RecordTaskPresenterTests {
     }
 
     @Test
-    public void onClick_StartRecord_Should_Be_Fine() {
+    public void onClickStartRecording_ShouldStartRecording() {
         mRecordTaskPresenter.isRecording = false;
         mRecordTaskPresenter.startRecording();
         verify(mRecordTasksView).startTimeCounter();
     }
 
     @Test
-    public void onClick_StartRecord_Should_Show_Error() {
+    public void onClickStartRecord_ShouldShowError() {
         mRecordTaskPresenter.isRecording = true;
         mRecordTaskPresenter.startRecording();
         verify(mRecordTasksView).showErrorRecordIntend(true);
     }
 
     @Test
-    public void onClick_StopRecord_Should_Be_Fine() {
+    public void onClickStopRecord_ShouldStopRecordingWell() {
         mRecordTaskPresenter.isRecording = true;
         mRecordTaskPresenter.stopRecording();
         verify(mRecordTasksView).stopTimeCounter();
@@ -74,35 +74,35 @@ public class RecordTaskPresenterTests {
     }
 
     @Test
-    public void onClick_StopRecord_Should_Show_Error() {
+    public void onClickStopRecord_ShouldShowError() {
         mRecordTaskPresenter.isRecording = false;
         mRecordTaskPresenter.stopRecording();
         verify(mRecordTasksView).showErrorRecordIntend(false);
     }
 
     @Test
-    public void onPickTaskName_Should_Be_Fine() {
+    public void onPickTaskName_ShouldShowTaskPicker() {
         mRecordTaskPresenter.isRecording = false;
         mRecordTaskPresenter.pickTaskName();
         verify(mRecordTasksView).showTaskNamePiker();
     }
 
     @Test
-    public void onPickTaskName_Should_Show_Error() {
+    public void onPickTaskName_ShouldShowRecordingIntentError() {
         mRecordTaskPresenter.isRecording = true;
         mRecordTaskPresenter.pickTaskName();
         verify(mRecordTasksView).showErrorRecordIntend(true);
     }
 
     @Test
-    public void onPickAnEmployee_Should_Be_Fine() {
+    public void onPickAnEmployee_ShouldShowEmployeePicker() {
         mRecordTaskPresenter.isRecording = false;
         mRecordTaskPresenter.pickAnEmployee();
         verify(mRecordTasksView).showEmployeePicker();
     }
 
     @Test
-    public void onPickAnEmployee_Should_Show_Error() {
+    public void onPickAnEmployee_ShouldShowRecordingIntentError() {
         mRecordTaskPresenter.isRecording = true;
         mRecordTaskPresenter.pickAnEmployee();
         verify(mRecordTasksView).showErrorRecordIntend(true);

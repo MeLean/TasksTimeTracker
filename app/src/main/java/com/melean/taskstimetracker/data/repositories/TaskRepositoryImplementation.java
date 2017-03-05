@@ -9,11 +9,10 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-import io.realm.Realm;
-
 public class TaskRepositoryImplementation implements ITaskRepository{
-    public static final String dateFormat = "YYYY.MM.dd HH:mm";
     private RealmDatabase mRealmDatabase;
+    private SimpleDateFormat nDateFormatter =
+            new SimpleDateFormat("YYYY.MM.dd HH:mm", Locale.getDefault());
 
     public TaskRepositoryImplementation(RealmDatabase realmDatabase) {
         this.mRealmDatabase = realmDatabase;
@@ -21,18 +20,18 @@ public class TaskRepositoryImplementation implements ITaskRepository{
 
     @Override
     public TaskEntity makeTask(String employeeName, String taskName, long secondsWorked, boolean isInterrupted) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(TaskRepositoryImplementation.dateFormat, Locale.getDefault());
-        String dateAdded = dateFormat.format(System.currentTimeMillis());
+        String dateAdded = nDateFormatter.format(System.currentTimeMillis());
         return new TaskEntity(employeeName, taskName, secondsWorked, isInterrupted, dateAdded);
     }
 
     @Override
-    public void getAllTasks(@NonNull LoadTasksCallback callback) {
-
+    public void getAllTasks(@NonNull GetAllTasksCallback callback) {
+        List<TaskEntity> results = mRealmDatabase.findAll(TaskEntity.class);
+        callback.onTasksLoaded(results);
     }
 
     @Override
-    public void getTask(@NonNull String taskId, @NonNull GetTaskCallback callback) {
+    public void getTask(int taskId, @NonNull GetTaskCallback callback) {
 
     }
 
@@ -42,12 +41,12 @@ public class TaskRepositoryImplementation implements ITaskRepository{
     }
 
     @Override
-    public void saveAllTasks(List<TaskEntity> tasks) {
-
+    public void saveAllTasks(@NonNull List<TaskEntity> tasks) {
+        mRealmDatabase.addAll(tasks);
     }
 
     @Override
-    public void refreshData() {
-
+    public SimpleDateFormat getDateFormatter() {
+        return nDateFormatter;
     }
 }

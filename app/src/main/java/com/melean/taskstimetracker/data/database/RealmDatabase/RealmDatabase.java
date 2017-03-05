@@ -38,11 +38,12 @@ public class RealmDatabase {
         return list;
     }
 
-    public synchronized <T extends RealmObject> RealmResults<T> findAll(Class<T> clazz) {
-        return getRealmInstance().where(clazz).findAll();
+    public synchronized <T extends RealmObject> List<T> findAll(Class<T> clazz) {
+          return getRealmInstance().copyFromRealm(getRealmInstance().where(clazz).findAll());
     }
 
     public synchronized <T extends RealmObject> RealmResults<T> findAllByProperty(Class<T> clazz, String propertyName, Object propertyValue) {
+        //add more cases if needed
         if(propertyValue instanceof Integer) {
             return getRealmInstance().where(clazz).equalTo(propertyName, (Integer) propertyValue).findAll();
         }else if(propertyValue instanceof String){
@@ -63,7 +64,7 @@ public class RealmDatabase {
 
         if(existingRecords != null && existingRecords.size() > 0) {
             realm.beginTransaction();
-            existingRecords.clear();
+            existingRecords.deleteAllFromRealm();
             realm.commitTransaction();
             return true;
         }
@@ -82,7 +83,7 @@ public class RealmDatabase {
         }
         if(existingRecords != null && existingRecords.size() > 0){
             realm.beginTransaction();
-            existingRecords.clear();
+            existingRecords.deleteAllFromRealm();
             realm.commitTransaction();
             return true;
         }
