@@ -42,7 +42,7 @@ public class RealmDatabase {
           return getRealmInstance().where(clazz).findAll();
     }
 
-    public synchronized <T extends RealmObject> List<T> getAll(Class<T> clazz) {
+    public synchronized <T extends RealmObject> List<T> copyAll(Class<T> clazz) {
         return getRealmInstance().copyFromRealm(findAll(clazz));
     }
 
@@ -59,6 +59,10 @@ public class RealmDatabase {
             return getRealmInstance().where(clazz).equalTo(propertyName, (Boolean) propertyValue).findAll();
         }
         return null;
+    }
+
+    public synchronized <T extends RealmObject> List<T> copyAllByProperty(Class<T> clazz,String propertyName, Object propertyValue) {
+        return getRealmInstance().copyFromRealm(findAllByProperty(clazz, propertyName, propertyValue));
     }
 
     public <T extends RealmObject> RealmObject findFirst(Class<T> clazz) {

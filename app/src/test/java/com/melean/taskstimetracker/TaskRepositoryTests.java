@@ -85,11 +85,13 @@ public class TaskRepositoryTests {
 
      @Test
     public void onGetTask_ShouldGetTask() {
-         when(mMockedRealmDatabase.findAllByProperty(TaskEntity.class, "id", 1))
-                 .thenAnswer(new Answer<TaskEntity>() {
+         when(mMockedRealmDatabase.copyAllByProperty(TaskEntity.class, "id", 1))
+                 .thenAnswer(new Answer<List<TaskEntity>>() {
                      @Override
-                     public TaskEntity answer(InvocationOnMock invocation) throws Throwable {
-                         return mTestListTaskEntities.get(1);
+                     public List<TaskEntity> answer(InvocationOnMock invocation) throws Throwable {
+                         List<TaskEntity> taskList = new ArrayList<>();
+                         taskList.add(mTestListTaskEntities.get(1));
+                         return taskList;
                      }
                  });
 
@@ -103,7 +105,7 @@ public class TaskRepositoryTests {
 
     @Test
     public void onGetAllTasks_ShouldSaveTasks() {
-        when(mMockedRealmDatabase.getAll(TaskEntity.class)).thenAnswer(new Answer<List<TaskEntity>>() {
+        when(mMockedRealmDatabase.copyAll(TaskEntity.class)).thenAnswer(new Answer<List<TaskEntity>>() {
             @Override
             public List<TaskEntity> answer(InvocationOnMock invocation) throws Throwable {
                 return mTestListTaskEntities;
