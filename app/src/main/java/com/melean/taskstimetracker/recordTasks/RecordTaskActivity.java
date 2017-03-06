@@ -13,12 +13,12 @@ import android.view.View;
 
 import com.melean.taskstimetracker.R;
 
-public class RecordNodeActivity extends AppCompatActivity {
+public class RecordTaskActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_record_node);
+        setContentView(R.layout.activity_record_task);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -34,7 +34,7 @@ public class RecordNodeActivity extends AppCompatActivity {
         }
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_record);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

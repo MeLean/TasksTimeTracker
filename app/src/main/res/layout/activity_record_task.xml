@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.melean.taskstimetracker.recordTasks.RecordNodeActivity">
+    tools:context=".recordTasks.RecordTaskActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -21,14 +21,28 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_record_node" />
+    <include layout="@layout/content_record_task" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+        >
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@android:drawable/ic_media_play" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_pause"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:layout_toLeftOf="@+id/fab_record"
+            android:src="@android:drawable/ic_media_pause" />
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

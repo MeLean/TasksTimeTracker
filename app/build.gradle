@@ -11,6 +11,8 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -28,7 +30,20 @@ dependencies {
     testCompile "org.powermock:powermock-module-junit4:$rootProject.ext.powerMockito"
     testCompile "org.powermock:powermock-api-mockito:$rootProject.ext.powerMockito"
 
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
-    compile 'com.android.support:support-v4:24.2.1'
+    // Android Testing Support Library's runner and rules
+    androidTestCompile "com.android.support.test:runner:$rootProject.ext.runnerVersion"
+    androidTestCompile "com.android.support.test:rules:$rootProject.ext.rulesVersion"
+
+    // Espresso UI Testing dependencies.
+    androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
+    androidTestCompile "com.android.support.test.espresso:espresso-contrib:$rootProject.ext.espressoVersion"
+
+    androidTestCompile "com.android.support:support-annotations:$rootProject.ext.supportLibsVersion"
+    androidTestCompile "com.android.support:appcompat-v7:$rootProject.ext.supportLibsVersion"
+    androidTestCompile "com.android.support:design:$rootProject.ext.supportLibsVersion"
+    androidTestCompile "com.android.support:support-v4:$rootProject.ext.supportLibsVersion"
+
+    compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibsVersion"
+    compile "com.android.support:design:$rootProject.ext.supportLibsVersion"
+    compile "com.android.support:support-v4:$rootProject.ext.supportLibsVersion"
 }
