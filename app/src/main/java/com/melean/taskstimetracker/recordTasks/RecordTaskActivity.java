@@ -10,10 +10,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import com.melean.taskstimetracker.R;
 
-public class RecordTaskActivity extends AppCompatActivity {
+public class RecordTaskActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +24,7 @@ public class RecordTaskActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null){
+        if (actionBar != null) {
             actionBar.setTitle(R.string.record_task);
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowHomeEnabled(true);
@@ -33,25 +34,8 @@ public class RecordTaskActivity extends AppCompatActivity {
             initFragment(RecordTaskFragment.newInstance());
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_record);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FloatingActionButton fabRecord = (FloatingActionButton)  findViewById(R.id.fab_record);
-                View pauseBtn = findViewById(R.id.fab_pause);
-                String fabRecordContentDescription = fabRecord.getContentDescription().toString();
-
-                if(getString(R.string.start).equals(fabRecordContentDescription)){
-                    pauseBtn.setVisibility(View.VISIBLE);
-                    fabRecord.setImageResource(android.R.drawable.ic_menu_save);
-                    fabRecord.setContentDescription(getString(R.string.save));
-                }else {
-                    pauseBtn.setVisibility(View.GONE);
-                    fabRecord.setImageResource(android.R.drawable.ic_media_play);
-                    fabRecord.setContentDescription(getString(R.string.start));
-                }
-            }
-        });
+        findViewById(R.id.fab_record).setOnClickListener(this);
+        findViewById(R.id.fab_pause).setOnClickListener(this);
     }
 
     @Override
@@ -66,5 +50,28 @@ public class RecordTaskActivity extends AppCompatActivity {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.frame_container, recordTaskFragment);
         transaction.commit();
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        if (id == R.id.fab_record) {
+            FloatingActionButton fabRecord = (FloatingActionButton) findViewById(R.id.fab_record);
+            View pauseBtn = findViewById(R.id.fab_pause);
+            String fabRecordContentDescription = fabRecord.getContentDescription().toString();
+
+            if (getString(R.string.start).equals(fabRecordContentDescription)) {
+                pauseBtn.setVisibility(View.VISIBLE);
+                fabRecord.setImageResource(android.R.drawable.ic_menu_save);
+                fabRecord.setContentDescription(getString(R.string.save));
+            } else {
+                pauseBtn.setVisibility(View.GONE);
+                fabRecord.setImageResource(android.R.drawable.ic_media_play);
+                fabRecord.setContentDescription(getString(R.string.start));
+
+            }
+        }else if(id == R.id.fab_pause){
+            Toast.makeText(RecordTaskActivity.this, "Implement pause", Toast.LENGTH_SHORT).show();
+        }
     }
 }
