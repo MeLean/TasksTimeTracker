@@ -10,4 +10,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="record_task">Record task</string>
+    <string name="pause">fab_pause</string>
+    <string name="start">fab_start</string>
+    <string name="save">fab_save</string>
 </resources>

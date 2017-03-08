@@ -33,14 +33,23 @@ public class RecordTaskActivity extends AppCompatActivity {
             initFragment(RecordTaskFragment.newInstance());
         }
 
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_record);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                findViewById(R.id.fab_pause).setVisibility(View.VISIBLE);
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                FloatingActionButton fabRecord = (FloatingActionButton)  findViewById(R.id.fab_record);
+                View pauseBtn = findViewById(R.id.fab_pause);
+                String fabRecordContentDescription = fabRecord.getContentDescription().toString();
+
+                if(getString(R.string.start).equals(fabRecordContentDescription)){
+                    pauseBtn.setVisibility(View.VISIBLE);
+                    fabRecord.setImageResource(android.R.drawable.ic_menu_save);
+                    fabRecord.setContentDescription(getString(R.string.save));
+                }else {
+                    pauseBtn.setVisibility(View.GONE);
+                    fabRecord.setImageResource(android.R.drawable.ic_media_play);
+                    fabRecord.setContentDescription(getString(R.string.start));
+                }
             }
         });
     }
