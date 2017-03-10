@@ -17,7 +17,7 @@ public class RecordTaskPresenter implements RecordTaskContract.UserActionsListen
     @Override
     public void startRecording() {
         if (!isRecording) {
-            recordTaskView.startTimeCounter();
+            recordTaskView.toggleTimeCounter(false);
             isRecording = true;
         } else {
             recordTaskView.showErrorRecordIntend(true);
@@ -28,36 +28,12 @@ public class RecordTaskPresenter implements RecordTaskContract.UserActionsListen
     @Override
     public void stopRecording() {
         if (isRecording) {
-            recordTaskView.stopTimeCounter();
+            recordTaskView.toggleTimeCounter(true);
             isRecording = false;
 
-            taskRepository.makeTask(
-                    recordTaskView.getEmployeeName(),
-                    recordTaskView.getTaskName(),
-                    recordTaskView.getSecondsWorked(),
-                    recordTaskView.isInterrupted()
-            );
+            taskRepository.saveTask(recordTaskView.getTaskModel());
         } else {
             recordTaskView.showErrorRecordIntend(false);
-        }
-    }
-
-    @Override
-    public void pickTaskName() {
-        if (!isRecording){
-            recordTaskView.showTaskNamePiker();
-        } else {
-            recordTaskView.showErrorRecordIntend(true);
-        }
-
-    }
-
-    @Override
-    public void pickAnEmployee() {
-        if (!isRecording){
-            recordTaskView.showEmployeePicker();
-        } else {
-            recordTaskView.showErrorRecordIntend(true);
         }
     }
 }

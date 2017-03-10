@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.melean.taskstimetracker.R;
-import com.melean.taskstimetracker.data.database.RealmObjects.TaskEntity;
+import com.melean.taskstimetracker.data.models.TaskEntityModel;
 
 public class RecordTaskFragment extends Fragment implements RecordTaskContract.View {
 
@@ -28,52 +28,17 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
     }
 
     @Override
-    public void showTaskPane() {
-
-    }
-
-    @Override
     public void showErrorRecordIntend(boolean isRecording) {
 
     }
 
     @Override
-    public void startTimeCounter() {
+    public void toggleTimeCounter(boolean isStarted) {
 
     }
 
     @Override
-    public void stopTimeCounter() {
-
-    }
-
-    @Override
-    public void showTaskNamePiker() {
-
-    }
-
-    @Override
-    public void showEmployeePicker() {
-
-    }
-
-    @Override
-    public String getEmployeeName() {
+    public TaskEntityModel getTaskModel() {
         return null;
-    }
-
-    @Override
-    public String getTaskName() {
-        return null;
-    }
-
-    @Override
-    public long getSecondsWorked() {
-        return 0;
-    }
-
-    @Override
-    public boolean isInterrupted() {
-        return false;
     }
 }

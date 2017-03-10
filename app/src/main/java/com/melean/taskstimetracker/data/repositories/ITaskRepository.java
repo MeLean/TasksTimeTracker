@@ -2,31 +2,29 @@ package com.melean.taskstimetracker.data.repositories;
 
 import android.support.annotation.NonNull;
 
-import com.melean.taskstimetracker.data.database.RealmObjects.TaskEntity;
+import com.melean.taskstimetracker.data.models.TaskEntityModel;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 public interface ITaskRepository {
     public static final String dateFormat = "YYYY.MM.dd HH:mm";
-
-    TaskEntity makeTask(String employeeName, String taskName, long secondsWorked, boolean isInterrupted);
-
+    
     interface GetAllTasksCallback {
-        void onTasksLoaded(List<TaskEntity> tasks);
+        void onTasksLoaded(List<TaskEntityModel> tasks);
     }
 
     interface GetTaskCallback {
-        void onTaskLoaded(TaskEntity task);
+        void onTaskLoaded(TaskEntityModel task);
     }
 
     void getAllTasks(@NonNull GetAllTasksCallback callback);
 
     void getTask(int taskId, @NonNull GetTaskCallback callback);
 
-    void saveTask(@NonNull TaskEntity task);
+    void saveTask(@NonNull TaskEntityModel task);
 
-    void saveAllTasks(List<TaskEntity> tasks);
+    void saveAllTasks(List<TaskEntityModel> tasks);
 
     SimpleDateFormat getDateFormatter();
 }

@@ -1,5 +1,6 @@
 package com.melean.taskstimetracker;
 
+import com.melean.taskstimetracker.data.models.TaskEntityModel;
 import com.melean.taskstimetracker.data.repositories.ITaskRepository;
 import com.melean.taskstimetracker.recordTasks.RecordTaskContract;
 import com.melean.taskstimetracker.recordTasks.RecordTaskPresenter;
@@ -39,7 +40,7 @@ public class RecordTaskPresenterTests {
     public void onClickStartRecording_ShouldStartRecording() {
         mRecordTaskPresenter.isRecording = false;
         mRecordTaskPresenter.startRecording();
-        verify(mRecordTasksView).startTimeCounter();
+        verify(mRecordTasksView).toggleTimeCounter(true);
     }
 
     @Test
@@ -53,24 +54,13 @@ public class RecordTaskPresenterTests {
     public void onClickStopRecord_ShouldStopRecordingWell() {
         mRecordTaskPresenter.isRecording = true;
         mRecordTaskPresenter.stopRecording();
-        verify(mRecordTasksView).stopTimeCounter();
+        verify(mRecordTasksView).toggleTimeCounter(false);
 
-        ArgumentCaptor<String> employeeArgument = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<String> taskNameArgument = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<Long> timeWorkedArgument = ArgumentCaptor.forClass(Long.class);
-        ArgumentCaptor<Boolean> isInterruptedArgument = ArgumentCaptor.forClass(Boolean.class);
+        ArgumentCaptor<TaskEntityModel> taskModelArgument = ArgumentCaptor.forClass(TaskEntityModel.class);
 
-        verify(mRecordTaskRepository).makeTask(
-                employeeArgument.capture(),
-                taskNameArgument.capture(),
-                timeWorkedArgument.capture(),
-                isInterruptedArgument.capture()
-        );
+        verify(mRecordTaskRepository).saveTask(taskModelArgument.capture());
 
-        assertEquals(mRecordTasksView.getEmployeeName(), employeeArgument.getValue());
-        assertEquals(mRecordTasksView.getTaskName(), taskNameArgument.getValue());
-        assertEquals(Long.valueOf(mRecordTasksView.getSecondsWorked()), timeWorkedArgument.getValue());
-        assertEquals(Boolean.valueOf(mRecordTasksView.isInterrupted()), isInterruptedArgument.getValue());
+        assertEquals(mRecordTasksView.getTaskModel(), taskModelArgument.getValue());
     }
 
     @Test
@@ -78,33 +68,5 @@ public class RecordTaskPresenterTests {
         mRecordTaskPresenter.isRecording = false;
         mRecordTaskPresenter.stopRecording();
         verify(mRecordTasksView).showErrorRecordIntend(false);
-    }
-
-    @Test
-    public void onPickTaskName_ShouldShowTaskPicker() {
-        mRecordTaskPresenter.isRecording = false;
-        mRecordTaskPresenter.pickTaskName();
-        verify(mRecordTasksView).showTaskNamePiker();
-    }
-
-    @Test
-    public void onPickTaskName_ShouldShowRecordingIntentError() {
-        mRecordTaskPresenter.isRecording = true;
-        mRecordTaskPresenter.pickTaskName();
-        verify(mRecordTasksView).showErrorRecordIntend(true);
-    }
-
-    @Test
-    public void onPickAnEmployee_ShouldShowEmployeePicker() {
-        mRecordTaskPresenter.isRecording = false;
-        mRecordTaskPresenter.pickAnEmployee();
-        verify(mRecordTasksView).showEmployeePicker();
-    }
-
-    @Test
-    public void onPickAnEmployee_ShouldShowRecordingIntentError() {
-        mRecordTaskPresenter.isRecording = true;
-        mRecordTaskPresenter.pickAnEmployee();
-        verify(mRecordTasksView).showErrorRecordIntend(true);
     }
 }

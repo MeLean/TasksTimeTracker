@@ -2,7 +2,7 @@ package com.melean.taskstimetracker;
 
 
 
-import com.melean.taskstimetracker.data.database.RealmObjects.TaskEntity;
+import com.melean.taskstimetracker.data.database.RealmObjects.TaskEntityRealmObject;
 
 import org.powermock.api.mockito.PowerMockito;
 
@@ -18,7 +18,7 @@ public class MockGenerator {
 
         Realm mockedRealm = PowerMockito.mock(Realm.class);
 
-        when(mockedRealm.createObject(TaskEntity.class)).thenReturn(new TaskEntity());
+        when(mockedRealm.createObject(TaskEntityRealmObject.class)).thenReturn(new TaskEntityRealmObject());
 
         when(Realm.getDefaultInstance()).thenReturn(mockedRealm);
 

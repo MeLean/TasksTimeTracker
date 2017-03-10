@@ -3,11 +3,17 @@ package com.melean.taskstimetracker.data.repositories;
 import android.support.annotation.NonNull;
 
 import com.melean.taskstimetracker.data.database.RealmDatabase.RealmDatabase;
-import com.melean.taskstimetracker.data.database.RealmObjects.TaskEntity;
+import com.melean.taskstimetracker.data.database.RealmObjects.TaskEntityRealmObject;
+import com.melean.taskstimetracker.data.models.TaskEntityModel;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import io.realm.exceptions.RealmException;
 
 public class TaskRepositoryImplementation implements ITaskRepository{
     private RealmDatabase mRealmDatabase;
@@ -18,37 +24,64 @@ public class TaskRepositoryImplementation implements ITaskRepository{
         this.mRealmDatabase = realmDatabase;
     }
 
-    @Override
-    public TaskEntity makeTask(String employeeName, String taskName, long secondsWorked, boolean isInterrupted) {
-        String dateAdded = nDateFormatter.format(System.currentTimeMillis());
-        return new TaskEntity(employeeName, taskName, secondsWorked, isInterrupted, dateAdded);
-    }
 
     @Override
     public void getAllTasks(@NonNull ITaskRepository.GetAllTasksCallback callback) {
-        callback.onTasksLoaded(mRealmDatabase.copyAll(TaskEntity.class));
+        callback.onTasksLoaded(toRealmObjectList(mRealmDatabase.copyAll(TaskEntityRealmObject.class)));
     }
 
     @Override
     public void getTask(int taskId, @NonNull ITaskRepository.GetTaskCallback callback) {
+        List<TaskEntityRealmObject> results = mRealmDatabase.copyAllByProperty(TaskEntityRealmObject.class, "id", taskId);
 
-        callback.onTaskLoaded(
-                mRealmDatabase.copyAllByProperty(TaskEntity.class, "id", taskId).get(0)
-        );
+        if(results.size() == 1){
+            callback.onTaskLoaded(
+                    TaskEntityModel.makeFrom(results.get(0))
+            );
+        }else{
+            if(results.size() > 1){
+                throw new RealmException("More than one entity found!");
+            }
+        }
+
     }
 
     @Override
-    public void saveTask(@NonNull TaskEntity task) {
-        mRealmDatabase.add(task);
+    public void saveTask(@NonNull TaskEntityModel task) {
+        mRealmDatabase.add(TaskEntityRealmObject.makeFrom(task));
     }
 
     @Override
-    public void saveAllTasks(@NonNull List<TaskEntity> tasks) {
-        mRealmDatabase.addAll(tasks);
+    public void saveAllTasks(@NonNull List<TaskEntityModel> tasks) {
+        mRealmDatabase.addAll(toModelList(tasks));
     }
 
     @Override
     public SimpleDateFormat getDateFormatter() {
         return nDateFormatter;
+    }
+
+    private static List<TaskEntityRealmObject> toModelList(@NotNull List<TaskEntityModel> models) {
+
+        List<TaskEntityRealmObject> resultList = new ArrayList<>();
+
+        for (TaskEntityModel element : models) {
+
+            resultList.add(TaskEntityRealmObject.makeFrom(element));
+        }
+
+        return resultList;
+    }
+
+    private static List<TaskEntityModel> toRealmObjectList(@NotNull List<TaskEntityRealmObject> realmObjects) {
+
+        List<TaskEntityModel> resultList = new ArrayList<>();
+
+        for (TaskEntityRealmObject element : realmObjects) {
+
+            resultList.add(TaskEntityModel.makeFrom(element));
+        }
+
+        return resultList;
     }
 }
