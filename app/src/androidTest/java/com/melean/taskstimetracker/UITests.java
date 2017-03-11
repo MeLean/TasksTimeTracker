@@ -35,10 +35,11 @@ public class UITests {
          res = testedActivity.getActivity().getResources();
     }
 
+
     @Test
     @LargeTest
     public void CheckStartingViewsLoaded(){
-        onView(allOf(withId(R.id.tasks_list))).check(matches(isDisplayed()));
+        onView(withId(R.id.tasks_list)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -46,7 +47,7 @@ public class UITests {
     public void clickStartRecord_PauseButtonAndStartStopToggle(){
 
         //first click should show pause button and change image to save on record button
-        onView(allOf(withId(R.id.fab_record))).perform(click());
+        onView(withId(R.id.fab_record)).perform(click());
         onView(withId(R.id.fab_pause)).check(matches(isDisplayed()));
         onView(withContentDescription(res.getString(R.string.save))).check(matches(isDisplayed()));
 

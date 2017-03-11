@@ -2,6 +2,8 @@ package com.melean.taskstimetracker.recordTasks;
 
 import com.melean.taskstimetracker.data.repositories.ITaskRepository;
 
+import java.util.List;
+
 public class RecordTaskPresenter implements RecordTaskContract.UserActionsListener {
     private RecordTaskContract.View recordTaskView;
     private ITaskRepository taskRepository;
@@ -13,6 +15,16 @@ public class RecordTaskPresenter implements RecordTaskContract.UserActionsListen
         this.isRecording = false;
     }
 
+
+    @Override
+    public List<String> getTasksNames() {
+        return null;
+    }
+
+    @Override
+    public List<String> getEmployeeNames() {
+        return null;
+    }
 
     @Override
     public void startRecording() {
