@@ -27,7 +27,7 @@ public class TaskRepositoryImplementation implements ITaskRepository{
 
     @Override
     public void getAllTasks(@NonNull ITaskRepository.GetAllTasksCallback callback) {
-        callback.onTasksLoaded(toRealmObjectList(mRealmDatabase.copyAll(TaskEntityRealmObject.class)));
+        callback.onTasksLoaded(makeModelList(mRealmDatabase.copyAll(TaskEntityRealmObject.class)));
     }
 
     @Override
@@ -35,9 +35,7 @@ public class TaskRepositoryImplementation implements ITaskRepository{
         List<TaskEntityRealmObject> results = mRealmDatabase.copyAllByProperty(TaskEntityRealmObject.class, "id", taskId);
 
         if(results.size() == 1){
-            callback.onTaskLoaded(
-                    TaskEntityModel.makeFrom(results.get(0))
-            );
+            callback.onTaskLoaded(TaskEntityModel.makeFrom(results.get(0)));
         }else{
             if(results.size() > 1){
                 throw new RealmException("More than one entity found!");
@@ -53,7 +51,7 @@ public class TaskRepositoryImplementation implements ITaskRepository{
 
     @Override
     public void saveAllTasks(@NonNull List<TaskEntityModel> tasks) {
-        mRealmDatabase.addAll(toModelList(tasks));
+        mRealmDatabase.addAll(makeRealmObjectList(tasks));
     }
 
     @Override
@@ -61,7 +59,7 @@ public class TaskRepositoryImplementation implements ITaskRepository{
         return nDateFormatter;
     }
 
-    private static List<TaskEntityRealmObject> toModelList(@NotNull List<TaskEntityModel> models) {
+    private static List<TaskEntityRealmObject> makeRealmObjectList(@NotNull List<TaskEntityModel> models) {
 
         List<TaskEntityRealmObject> resultList = new ArrayList<>();
 
@@ -73,7 +71,7 @@ public class TaskRepositoryImplementation implements ITaskRepository{
         return resultList;
     }
 
-    private static List<TaskEntityModel> toRealmObjectList(@NotNull List<TaskEntityRealmObject> realmObjects) {
+    private static List<TaskEntityModel> makeModelList(@NotNull List<TaskEntityRealmObject> realmObjects) {
 
         List<TaskEntityModel> resultList = new ArrayList<>();
 
