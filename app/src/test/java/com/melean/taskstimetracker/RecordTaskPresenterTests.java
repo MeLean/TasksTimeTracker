@@ -1,5 +1,6 @@
 package com.melean.taskstimetracker;
 
+import com.melean.taskstimetracker.data.database.RealmObjects.TaskRealmObject;
 import com.melean.taskstimetracker.data.models.TaskEntityModel;
 import com.melean.taskstimetracker.data.repositories.ITaskRepository;
 import com.melean.taskstimetracker.recordTasks.RecordTaskContract;
@@ -10,6 +11,8 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -73,7 +76,9 @@ public class RecordTaskPresenterTests {
     @Test
     public void onGetTaskName_ShouldShowError() {
         mRecordTaskPresenter.isRecording = false;
-
-        verify(mRecordTaskRepository);
+        mRecordTaskPresenter.getTasksNames();
+        ArgumentCaptor<ITaskRepository.GetTasksCallback> taskCallbackArgument =
+                ArgumentCaptor.forClass(ITaskRepository.GetTasksCallback.class);
+        verify(mRecordTaskRepository).getTasks(taskCallbackArgument.capture());
     }
 }

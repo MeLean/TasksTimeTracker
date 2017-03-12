@@ -1,16 +1,16 @@
 package com.melean.taskstimetracker.recordTasks;
 
-import com.melean.taskstimetracker.data.database.RealmObjects.EmployeeRealmObject;
-import com.melean.taskstimetracker.data.database.RealmObjects.TaskRealmObject;
+import com.melean.taskstimetracker.data.models.EmployeeModel;
+import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.data.models.TaskEntityModel;
 
 import java.util.List;
 
 public interface RecordTaskContract {
     interface View {
-        void loadTasksList(List<TaskRealmObject> tasksNames);
+        void loadTasksList(List<TaskModel> tasksNames);
 
-        void loadEmployeesList(List<EmployeeRealmObject> employeesNames);
+        void loadEmployeesList(List<EmployeeModel> employeesNames);
 
         void showErrorRecordIntend(boolean isRecording);
 
@@ -20,9 +20,9 @@ public interface RecordTaskContract {
     }
 
     interface UserActionsListener {
-        List<TaskRealmObject> getTasksNames();
+        List<TaskModel> getTasksNames();
 
-        List<EmployeeRealmObject> getEmployeeNames();
+        List<EmployeeModel> getEmployeeNames();
 
         void startRecording();
 
