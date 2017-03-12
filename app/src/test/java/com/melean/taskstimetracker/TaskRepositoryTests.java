@@ -61,7 +61,7 @@ public class TaskRepositoryTests {
     @Test
     public void onSaveTask_ShouldSaveTask() {
         TaskEntityModel entity = mTestModelsList.get(0);
-        mTaskRepository.saveTask(entity);
+        mTaskRepository.saveTaskEntity(entity);
         ArgumentCaptor<TaskEntityRealmObject> realmCaptor = ArgumentCaptor.forClass(TaskEntityRealmObject.class);
         verify(mMockedRealmDatabase).add(realmCaptor.capture());
         assertNotNull(realmCaptor.getValue());
@@ -71,14 +71,14 @@ public class TaskRepositoryTests {
 /*    @Test (expected = AssertionError.class)
     public void onSaveTask_ShouldThrowException() {
         TaskEntityRealmObject noEntity = null;
-        mTaskRepository.saveTask(noEntity);
+        mTaskRepository.saveTaskEntity(noEntity);
         doThrow(new AssertionError()).when(mMockedRealmDatabase).add(noEntity);
     }*/
 
 
     @Test
     public void onSaveAllTasks_ShouldSaveTasks() {
-        mTaskRepository.saveAllTasks(mTestModelsList);
+        mTaskRepository.saveAllTaskEntities(mTestModelsList);
         //verify(mMockedRealmDatabase).addAll(mTestModelsList);
     }
 
@@ -94,10 +94,10 @@ public class TaskRepositoryTests {
                      }
                  });
 
-         mTaskRepository.getTask(1, new ITaskRepository.GetTaskCallback() {
+         mTaskRepository.getTaskEntity(1, new ITaskRepository.GetTaskEntityCallback() {
              @Override
-             public void onTaskLoaded(TaskEntityModel task) {
-                 assertNotNull(task);
+             public void onTaskEntityLoaded(TaskEntityModel taskEntityModel) {
+                 assertNotNull(taskEntityModel);
              }
         });
     }
@@ -111,10 +111,10 @@ public class TaskRepositoryTests {
             }
         });
 
-        mTaskRepository.getAllTasks(new ITaskRepository.GetAllTasksCallback() {
+        mTaskRepository.getAllTaskEntities(new ITaskRepository.GetAllTaskEntitiesCallback() {
             @Override
-            public void onTasksLoaded(List<TaskEntityModel> tasks) {
-                assertNotNull(tasks);
+            public void onTaskEntitiesLoaded(List<TaskEntityModel> taskEntityModels) {
+                assertNotNull(taskEntityModels);
             }
         });
     }

@@ -26,32 +26,41 @@ public class TaskRepositoryImplementation implements ITaskRepository{
 
 
     @Override
-    public void getAllTasks(@NonNull ITaskRepository.GetAllTasksCallback callback) {
-        callback.onTasksLoaded(makeModelList(mRealmDatabase.copyAll(TaskEntityRealmObject.class)));
+    public void getAllTaskEntities(@NonNull GetAllTaskEntitiesCallback callback) {
+        callback.onTaskEntitiesLoaded(makeModelList(mRealmDatabase.copyAll(TaskEntityRealmObject.class)));
     }
 
     @Override
-    public void getTask(int taskId, @NonNull ITaskRepository.GetTaskCallback callback) {
+    public void getTaskEntity(int taskId, @NonNull GetTaskEntityCallback callback) {
         List<TaskEntityRealmObject> results = mRealmDatabase.copyAllByProperty(TaskEntityRealmObject.class, "id", taskId);
 
         if(results.size() == 1){
-            callback.onTaskLoaded(TaskEntityModel.makeFrom(results.get(0)));
+            callback.onTaskEntityLoaded(TaskEntityModel.makeFrom(results.get(0)));
         }else{
             if(results.size() > 1){
                 throw new RealmException("More than one entity found!");
             }
         }
-
     }
 
     @Override
-    public void saveTask(@NonNull TaskEntityModel task) {
+    public void saveTaskEntity(@NonNull TaskEntityModel task) {
         mRealmDatabase.add(TaskEntityRealmObject.makeFrom(task));
     }
 
     @Override
-    public void saveAllTasks(@NonNull List<TaskEntityModel> tasks) {
+    public void saveAllTaskEntities(@NonNull List<TaskEntityModel> tasks) {
         mRealmDatabase.addAll(makeRealmObjectList(tasks));
+    }
+
+    @Override
+    public void getTasks(@NonNull GetTasksCallback callback) {
+
+    }
+
+    @Override
+    public void getEmployees(@NonNull GetEmployeesCallback callback) {
+
     }
 
     @Override
@@ -60,23 +69,19 @@ public class TaskRepositoryImplementation implements ITaskRepository{
     }
 
     private static List<TaskEntityRealmObject> makeRealmObjectList(@NotNull List<TaskEntityModel> models) {
-
         List<TaskEntityRealmObject> resultList = new ArrayList<>();
-
         for (TaskEntityModel element : models) {
-
             resultList.add(TaskEntityRealmObject.makeFrom(element));
         }
 
         return resultList;
     }
 
+
+
     private static List<TaskEntityModel> makeModelList(@NotNull List<TaskEntityRealmObject> realmObjects) {
-
         List<TaskEntityModel> resultList = new ArrayList<>();
-
         for (TaskEntityRealmObject element : realmObjects) {
-
             resultList.add(TaskEntityModel.makeFrom(element));
         }
 

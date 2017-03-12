@@ -58,7 +58,7 @@ public class RecordTaskPresenterTests {
 
         ArgumentCaptor<TaskEntityModel> taskModelArgument = ArgumentCaptor.forClass(TaskEntityModel.class);
 
-        verify(mRecordTaskRepository).saveTask(taskModelArgument.capture());
+        verify(mRecordTaskRepository).saveTaskEntity(taskModelArgument.capture());
 
         assertEquals(mRecordTasksView.getTaskModel(), taskModelArgument.getValue());
     }
@@ -68,5 +68,12 @@ public class RecordTaskPresenterTests {
         mRecordTaskPresenter.isRecording = false;
         mRecordTaskPresenter.stopRecording();
         verify(mRecordTasksView).showErrorRecordIntend(false);
+    }
+
+    @Test
+    public void onGetTaskName_ShouldShowError() {
+        mRecordTaskPresenter.isRecording = false;
+
+        verify(mRecordTaskRepository);
     }
 }

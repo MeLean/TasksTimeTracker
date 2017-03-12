@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.melean.taskstimetracker.data.models.TaskEntityModel;
 
 import io.realm.RealmObject;
+import io.realm.annotations.Index;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 
@@ -15,6 +16,7 @@ public class TaskEntityRealmObject extends RealmObject {
     private int _id;
     @Required
     private String employeeName;
+    @Index
     @Required
     private String taskName;
     private long secondsWorked;

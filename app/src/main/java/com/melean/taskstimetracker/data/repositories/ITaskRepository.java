@@ -2,29 +2,43 @@ package com.melean.taskstimetracker.data.repositories;
 
 import android.support.annotation.NonNull;
 
+import com.melean.taskstimetracker.data.database.RealmObjects.EmployeeRealmObject;
+import com.melean.taskstimetracker.data.database.RealmObjects.TaskRealmObject;
 import com.melean.taskstimetracker.data.models.TaskEntityModel;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 public interface ITaskRepository {
-    public static final String dateFormat = "YYYY.MM.dd HH:mm";
-    
-    interface GetAllTasksCallback {
-        void onTasksLoaded(List<TaskEntityModel> tasks);
+
+    interface GetAllTaskEntitiesCallback {
+        void onTaskEntitiesLoaded(List<TaskEntityModel> taskEntityModels);
     }
 
-    interface GetTaskCallback {
-        void onTaskLoaded(TaskEntityModel task);
+    interface GetTaskEntityCallback {
+        void onTaskEntityLoaded(TaskEntityModel taskEntityModel);
     }
 
-    void getAllTasks(@NonNull GetAllTasksCallback callback);
 
-    void getTask(int taskId, @NonNull GetTaskCallback callback);
+    interface GetTasksCallback {
+        void onTasksLoaded(List<TaskRealmObject> taskRealmObjects);
+    }
 
-    void saveTask(@NonNull TaskEntityModel task);
+    interface GetEmployeesCallback {
+        void onEmployeesLoaded(List<EmployeeRealmObject> tasks);
+    }
 
-    void saveAllTasks(List<TaskEntityModel> tasks);
+    void getAllTaskEntities(@NonNull GetAllTaskEntitiesCallback callback);
+
+    void getTaskEntity(int taskId, @NonNull GetTaskEntityCallback callback);
+
+    void saveTaskEntity(@NonNull TaskEntityModel task);
+
+    void saveAllTaskEntities(List<TaskEntityModel> tasks);
+
+    void getTasks(@NonNull GetTasksCallback callback);
+
+    void getEmployees(@NonNull GetEmployeesCallback callback);
 
     SimpleDateFormat getDateFormatter();
 }
