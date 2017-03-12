@@ -1,7 +1,7 @@
 package com.melean.taskstimetracker.recordTasks;
 
-import com.melean.taskstimetracker.data.database.RealmObjects.EmployeeRealmObject;
 import com.melean.taskstimetracker.data.database.RealmObjects.TaskRealmObject;
+import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.data.repositories.ITaskRepository;
 
 import java.util.List;
@@ -19,13 +19,18 @@ public class RecordTaskPresenter implements RecordTaskContract.UserActionsListen
 
 
     @Override
-    public List<TaskRealmObject> getTasksNames() {
-        return null;
+    public void displayTasks() {
+        taskRepository.getTasks(new ITaskRepository.GetTasksCallback() {
+            @Override
+            public void onTasksLoaded(List<TaskModel> tasks) {
+                recordTaskView.loadTasksList(tasks);
+            }
+        });
     }
 
     @Override
-    public List<EmployeeRealmObject> getEmployeeNames() {
-        return null;
+    public void getEmployees() {
+
     }
 
     @Override
@@ -44,7 +49,6 @@ public class RecordTaskPresenter implements RecordTaskContract.UserActionsListen
         if (isRecording) {
             recordTaskView.toggleTimeCounter(false);
             isRecording = false;
-
             taskRepository.saveTaskEntity(recordTaskView.getTaskModel());
         } else {
             recordTaskView.showErrorRecordIntend(false);

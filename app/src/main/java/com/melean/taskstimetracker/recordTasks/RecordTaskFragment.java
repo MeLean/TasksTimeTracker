@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import com.melean.taskstimetracker.R;
 import com.melean.taskstimetracker.data.database.RealmObjects.EmployeeRealmObject;
 import com.melean.taskstimetracker.data.database.RealmObjects.TaskRealmObject;
+import com.melean.taskstimetracker.data.models.EmployeeModel;
 import com.melean.taskstimetracker.data.models.TaskEntityModel;
+import com.melean.taskstimetracker.data.models.TaskModel;
 
 import java.util.List;
 
@@ -25,12 +27,12 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
     }
 
     @Override
-    public void loadTasksList(List<TaskRealmObject> tasksNames) {
+    public void loadTasksList(List<TaskModel> tasks) {
 
     }
 
     @Override
-    public void loadEmployeesList(List<EmployeeRealmObject> employeesNames) {
+    public void loadEmployeesList(List<EmployeeModel> employees) {
 
     }
 

@@ -1,7 +1,7 @@
 package com.melean.taskstimetracker;
 
-import com.melean.taskstimetracker.data.database.RealmObjects.TaskRealmObject;
 import com.melean.taskstimetracker.data.models.TaskEntityModel;
+import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.data.repositories.ITaskRepository;
 import com.melean.taskstimetracker.recordTasks.RecordTaskContract;
 import com.melean.taskstimetracker.recordTasks.RecordTaskPresenter;
@@ -9,6 +9,7 @@ import com.melean.taskstimetracker.recordTasks.RecordTaskPresenter;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -24,6 +25,11 @@ public class RecordTaskPresenterTests {
     @Mock
     private RecordTaskContract.View mRecordTasksView;
 
+    @Captor
+    ArgumentCaptor<List<TaskModel>> tasksModelCaptor;
+
+    @Captor
+    ArgumentCaptor<List<TaskModel>> tasksModelCaptor2;
 
     private RecordTaskPresenter mRecordTaskPresenter;
 
@@ -74,11 +80,14 @@ public class RecordTaskPresenterTests {
     }
 
     @Test
-    public void onGetTaskName_ShouldShowError() {
+    public void onDisplayTasks_ShouldShowError() {
         mRecordTaskPresenter.isRecording = false;
-        mRecordTaskPresenter.getTasksNames();
-        ArgumentCaptor<ITaskRepository.GetTasksCallback> taskCallbackArgument =
-                ArgumentCaptor.forClass(ITaskRepository.GetTasksCallback.class);
+        mRecordTaskPresenter.displayTasks();
+
+        ArgumentCaptor<ITaskRepository.GetTasksCallback> taskCallbackArgument = ArgumentCaptor.forClass(
+                ITaskRepository.GetTasksCallback.class);
         verify(mRecordTaskRepository).getTasks(taskCallbackArgument.capture());
+        taskCallbackArgument.getValue().onTasksLoaded(tasksModelCaptor.capture());
+        verify(mRecordTasksView).loadTasksList(tasksModelCaptor.capture());
     }
 }

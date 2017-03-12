@@ -20,9 +20,9 @@ public interface RecordTaskContract {
     }
 
     interface UserActionsListener {
-        List<TaskModel> getTasksNames();
+        void displayTasks();
 
-        List<EmployeeModel> getEmployeeNames();
+        void getEmployees();
 
         void startRecording();
 

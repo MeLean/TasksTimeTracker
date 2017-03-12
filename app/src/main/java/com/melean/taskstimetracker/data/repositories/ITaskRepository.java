@@ -4,7 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.melean.taskstimetracker.data.database.RealmObjects.EmployeeRealmObject;
 import com.melean.taskstimetracker.data.database.RealmObjects.TaskRealmObject;
+import com.melean.taskstimetracker.data.models.EmployeeModel;
 import com.melean.taskstimetracker.data.models.TaskEntityModel;
+import com.melean.taskstimetracker.data.models.TaskModel;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -21,11 +23,11 @@ public interface ITaskRepository {
 
 
     interface GetTasksCallback {
-        void onTasksLoaded(List<TaskRealmObject> taskRealmObjects);
+        void onTasksLoaded(List<TaskModel> tasks);
     }
 
     interface GetEmployeesCallback {
-        void onEmployeesLoaded(List<EmployeeRealmObject> tasks);
+        void onEmployeesLoaded(List<EmployeeModel> employees);
     }
 
     void getAllTaskEntities(@NonNull GetAllTaskEntitiesCallback callback);
