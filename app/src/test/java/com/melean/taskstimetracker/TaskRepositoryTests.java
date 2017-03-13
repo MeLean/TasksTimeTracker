@@ -3,7 +3,9 @@ package com.melean.taskstimetracker;
 
 import com.melean.taskstimetracker.data.database.RealmDatabase.RealmDatabase;
 import com.melean.taskstimetracker.data.database.RealmObjects.TaskEntityRealmObject;
+import com.melean.taskstimetracker.data.database.RealmObjects.TaskRealmObject;
 import com.melean.taskstimetracker.data.models.TaskEntityModel;
+import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.data.repositories.ITaskRepository;
 import com.melean.taskstimetracker.data.repositories.TaskRepositoryImplementation;
 
@@ -17,6 +19,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
@@ -31,12 +34,16 @@ public class TaskRepositoryTests {
     private static final String TASK_NAME = "Task Name";
     private static final Long WORKED_TIME = 14000L;
 
-    ITaskRepository mTaskRepository;
-    List<TaskEntityModel> mTestModelsList;
-    List<TaskEntityRealmObject> mTestRealmsList;
+    private ITaskRepository mTaskRepository;
+    private List<TaskEntityModel> mTestEntityModelsList;
+    private List<TaskEntityRealmObject> mTestRealmEntitiesList;
+    private List<TaskRealmObject> mTestTasksRealmList;
 
     @Mock
     RealmDatabase mMockedRealmDatabase;
+
+    @Captor
+    ArgumentCaptor<List<TaskRealmObject>> captorTaskRealmObjectList;
 
     public TaskRepositoryTests(){
         //empty constructor
@@ -48,19 +55,21 @@ public class TaskRepositoryTests {
         MockitoAnnotations.initMocks(this);
         mTaskRepository = new TaskRepositoryImplementation(mMockedRealmDatabase);
         String currentDate = mTaskRepository.getDateFormatter().format(System.currentTimeMillis());
-        mTestModelsList = new ArrayList<>();
-        mTestRealmsList = new ArrayList<>();
+        mTestEntityModelsList = new ArrayList<>();
+        mTestRealmEntitiesList = new ArrayList<>();
+        mTestTasksRealmList = new ArrayList<>();
         for (int i = 0; i <= 3; i++){
             TaskEntityModel model = new TaskEntityModel(EMPLOYEE_NAME + " - "+ i, i, TASK_NAME + " - "+ i, WORKED_TIME, false, currentDate);
-            mTestModelsList.add(model);
-            mTestRealmsList.add(TaskEntityRealmObject.makeFrom(model));
+            mTestEntityModelsList.add(model);
+            mTestRealmEntitiesList.add(TaskEntityRealmObject.makeFrom(model));
+            mTestTasksRealmList.add(new TaskRealmObject( TASK_NAME + " - "+ i));
         }
 
     }
 
     @Test
     public void onSaveTask_ShouldSaveTask() {
-        TaskEntityModel entity = mTestModelsList.get(0);
+        TaskEntityModel entity = mTestEntityModelsList.get(0);
         mTaskRepository.saveTaskEntity(entity);
         ArgumentCaptor<TaskEntityRealmObject> realmCaptor = ArgumentCaptor.forClass(TaskEntityRealmObject.class);
         verify(mMockedRealmDatabase).add(realmCaptor.capture());
@@ -68,28 +77,24 @@ public class TaskRepositoryTests {
 
     }
 
-/*    @Test (expected = AssertionError.class)
-    public void onSaveTask_ShouldThrowException() {
-        TaskEntityRealmObject noEntity = null;
-        mTaskRepository.saveTaskEntity(noEntity);
-        doThrow(new AssertionError()).when(mMockedRealmDatabase).add(noEntity);
-    }*/
-
-
     @Test
     public void onSaveAllTasks_ShouldSaveTasks() {
-        mTaskRepository.saveAllTaskEntities(mTestModelsList);
-        //verify(mMockedRealmDatabase).addAll(mTestModelsList);
+        mTaskRepository.saveAllTaskEntities(mTestEntityModelsList);
+
+        verify(mMockedRealmDatabase).addAll(captorTaskRealmObjectList.capture());
+        assertNotNull(captorTaskRealmObjectList.getValue());
     }
 
      @Test
     public void onGetTask_ShouldGetTask() {
-         when(mMockedRealmDatabase.copyAllByProperty(TaskEntityRealmObject.class, "id", 1))
+         String propertyName = "id";
+         int propertyValue = 1;
+         when(mMockedRealmDatabase.copyAllByProperty(TaskEntityRealmObject.class, propertyName, propertyValue))
                  .thenAnswer(new Answer<List<TaskEntityRealmObject>>() {
                      @Override
                      public List<TaskEntityRealmObject> answer(InvocationOnMock invocation) throws Throwable {
                          List<TaskEntityRealmObject> taskList = new ArrayList<>();
-                         taskList.add(mTestRealmsList.get(1));
+                         taskList.add(mTestRealmEntitiesList.get(1));
                          return taskList;
                      }
                  });
@@ -100,14 +105,17 @@ public class TaskRepositoryTests {
                  assertNotNull(taskEntityModel);
              }
         });
+
+         verify(mMockedRealmDatabase).copyAllByProperty(TaskEntityRealmObject.class, propertyName, propertyValue);
     }
 
     @Test
     public void onGetAllTasks_ShouldSaveTasks() {
-        when(mMockedRealmDatabase.copyAll(TaskEntityRealmObject.class)).thenAnswer(new Answer<List<TaskEntityRealmObject>>() {
+        when(mMockedRealmDatabase.copyAll(TaskEntityRealmObject.class))
+                .thenAnswer(new Answer<List<TaskEntityRealmObject>>() {
             @Override
             public List<TaskEntityRealmObject> answer(InvocationOnMock invocation) throws Throwable {
-                return mTestRealmsList;
+                return mTestRealmEntitiesList;
             }
         });
 
@@ -117,5 +125,33 @@ public class TaskRepositoryTests {
                 assertNotNull(taskEntityModels);
             }
         });
+
+        verify(mMockedRealmDatabase).copyAll(TaskEntityRealmObject.class);
+    }
+
+    @Test
+    public void onGetTasks_ReturnTasks() {
+        when(mMockedRealmDatabase.copyAll(TaskRealmObject.class))
+                .thenAnswer(new Answer<List<TaskRealmObject>>() {
+                    @Override
+                    public List<TaskRealmObject> answer(InvocationOnMock invocation) throws Throwable {
+                        return mTestTasksRealmList;
+                    }
+                });
+
+        mTaskRepository.getTasks(new ITaskRepository.LoadTasksCallback() {
+            @Override
+            public void onTasksLoaded(List<TaskModel> taskModels) {
+                assertNotNull(taskModels);
+                for (int i=0; i < taskModels.size(); i++){
+                    TaskRealmObject expected = mTestTasksRealmList.get(i);
+                    TaskModel actual = taskModels.get(i);
+
+                    assertEquals(expected.getTaskName(),actual.getTaskName());
+                }
+            }
+        });
+
+        verify(mMockedRealmDatabase).copyAll(TaskRealmObject.class);
     }
 }

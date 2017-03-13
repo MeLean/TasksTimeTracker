@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface RecordTaskContract {
     interface View {
-        void loadTasksList(List<TaskModel> tasksNames);
+        void showTasksList(List<TaskModel> tasksNames);
 
-        void loadEmployeesList(List<EmployeeModel> employeesNames);
+        void showEmployeesList(List<EmployeeModel> employeesNames);
 
         void showErrorRecordIntend(boolean isRecording);
 
@@ -20,9 +20,9 @@ public interface RecordTaskContract {
     }
 
     interface UserActionsListener {
-        void displayTasks();
+        void loadTasks();
 
-        void getEmployees();
+        void loadEmployees();
 
         void startRecording();
 

@@ -1,6 +1,5 @@
 package com.melean.taskstimetracker.recordTasks;
 
-import com.melean.taskstimetracker.data.database.RealmObjects.TaskRealmObject;
 import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.data.repositories.ITaskRepository;
 
@@ -19,17 +18,17 @@ public class RecordTaskPresenter implements RecordTaskContract.UserActionsListen
 
 
     @Override
-    public void displayTasks() {
-        taskRepository.getTasks(new ITaskRepository.GetTasksCallback() {
+    public void loadTasks() {
+        taskRepository.getTasks(new ITaskRepository.LoadTasksCallback() {
             @Override
             public void onTasksLoaded(List<TaskModel> tasks) {
-                recordTaskView.loadTasksList(tasks);
+                recordTaskView.showTasksList(tasks);
             }
         });
     }
 
     @Override
-    public void getEmployees() {
+    public void loadEmployees() {
 
     }
 

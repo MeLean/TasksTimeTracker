@@ -66,9 +66,7 @@ public class RecordTaskPresenterTests {
         verify(mRecordTasksView).toggleTimeCounter(false);
 
         ArgumentCaptor<TaskEntityModel> taskModelArgument = ArgumentCaptor.forClass(TaskEntityModel.class);
-
         verify(mRecordTaskRepository).saveTaskEntity(taskModelArgument.capture());
-
         assertEquals(mRecordTasksView.getTaskModel(), taskModelArgument.getValue());
     }
 
@@ -82,12 +80,12 @@ public class RecordTaskPresenterTests {
     @Test
     public void onDisplayTasks_ShouldShowError() {
         mRecordTaskPresenter.isRecording = false;
-        mRecordTaskPresenter.displayTasks();
+        mRecordTaskPresenter.loadTasks();
 
-        ArgumentCaptor<ITaskRepository.GetTasksCallback> taskCallbackArgument = ArgumentCaptor.forClass(
-                ITaskRepository.GetTasksCallback.class);
+        ArgumentCaptor<ITaskRepository.LoadTasksCallback> taskCallbackArgument = ArgumentCaptor.forClass(
+                ITaskRepository.LoadTasksCallback.class);
         verify(mRecordTaskRepository).getTasks(taskCallbackArgument.capture());
         taskCallbackArgument.getValue().onTasksLoaded(tasksModelCaptor.capture());
-        verify(mRecordTasksView).loadTasksList(tasksModelCaptor.capture());
+        verify(mRecordTasksView).showTasksList(tasksModelCaptor.capture());
     }
 }

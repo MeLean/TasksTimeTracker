@@ -2,8 +2,6 @@ package com.melean.taskstimetracker.data.repositories;
 
 import android.support.annotation.NonNull;
 
-import com.melean.taskstimetracker.data.database.RealmObjects.EmployeeRealmObject;
-import com.melean.taskstimetracker.data.database.RealmObjects.TaskRealmObject;
 import com.melean.taskstimetracker.data.models.EmployeeModel;
 import com.melean.taskstimetracker.data.models.TaskEntityModel;
 import com.melean.taskstimetracker.data.models.TaskModel;
@@ -22,11 +20,11 @@ public interface ITaskRepository {
     }
 
 
-    interface GetTasksCallback {
+    interface LoadTasksCallback {
         void onTasksLoaded(List<TaskModel> tasks);
     }
 
-    interface GetEmployeesCallback {
+    interface LoadEmployeesCallback {
         void onEmployeesLoaded(List<EmployeeModel> employees);
     }
 
@@ -38,9 +36,9 @@ public interface ITaskRepository {
 
     void saveAllTaskEntities(List<TaskEntityModel> tasks);
 
-    void getTasks(@NonNull GetTasksCallback callback);
+    void getTasks(@NonNull LoadTasksCallback callback);
 
-    void getEmployees(@NonNull GetEmployeesCallback callback);
+    void getEmployees(@NonNull LoadEmployeesCallback callback);
 
     SimpleDateFormat getDateFormatter();
 }

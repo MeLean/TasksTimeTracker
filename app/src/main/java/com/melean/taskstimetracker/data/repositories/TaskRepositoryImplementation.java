@@ -4,7 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.melean.taskstimetracker.data.database.RealmDatabase.RealmDatabase;
 import com.melean.taskstimetracker.data.database.RealmObjects.TaskEntityRealmObject;
+import com.melean.taskstimetracker.data.database.RealmObjects.TaskRealmObject;
 import com.melean.taskstimetracker.data.models.TaskEntityModel;
+import com.melean.taskstimetracker.data.models.TaskModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +20,7 @@ import io.realm.exceptions.RealmException;
 public class TaskRepositoryImplementation implements ITaskRepository{
     private RealmDatabase mRealmDatabase;
     private SimpleDateFormat nDateFormatter =
-            new SimpleDateFormat("YYYY.MM.dd HH:mm", Locale.getDefault());
+            new SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.getDefault());
 
     public TaskRepositoryImplementation(RealmDatabase realmDatabase) {
         this.mRealmDatabase = realmDatabase;
@@ -54,12 +56,14 @@ public class TaskRepositoryImplementation implements ITaskRepository{
     }
 
     @Override
-    public void getTasks(@NonNull GetTasksCallback callback) {
-
+    public void getTasks(@NonNull LoadTasksCallback callback) {
+        callback.onTasksLoaded(
+                makeTaskModelList(mRealmDatabase.copyAll(TaskRealmObject.class))
+        );
     }
 
     @Override
-    public void getEmployees(@NonNull GetEmployeesCallback callback) {
+    public void getEmployees(@NonNull LoadEmployeesCallback callback) {
 
     }
 
@@ -77,12 +81,19 @@ public class TaskRepositoryImplementation implements ITaskRepository{
         return resultList;
     }
 
-
-
     private static List<TaskEntityModel> makeModelList(@NotNull List<TaskEntityRealmObject> realmObjects) {
         List<TaskEntityModel> resultList = new ArrayList<>();
         for (TaskEntityRealmObject element : realmObjects) {
             resultList.add(TaskEntityModel.makeFrom(element));
+        }
+
+        return resultList;
+    }
+
+    private static List<TaskModel> makeTaskModelList(@NotNull List<TaskRealmObject> realmObjects) {
+        List<TaskModel> resultList = new ArrayList<>();
+        for (TaskRealmObject element : realmObjects) {
+            resultList.add(new TaskModel(element.getTaskName()));
         }
 
         return resultList;

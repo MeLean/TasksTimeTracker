@@ -1,5 +1,7 @@
 package com.melean.taskstimetracker.data.database.RealmDatabase;
 
+import android.content.Context;
+
 import java.security.SecureRandom;
 import java.util.List;
 
@@ -10,14 +12,17 @@ import io.realm.RealmResults;
 
 public class RealmDatabase {
 
-   public RealmDatabase() {}
+    public RealmDatabase(Context context) {
+        Realm.init(context);
+    }
 
     public static Realm getRealmInstance() {
         //Realm configuration
-        byte[] key = new byte[64];
-        new SecureRandom().nextBytes(key);
+
+        //byte[] key = new byte[64];
+        //new SecureRandom().nextBytes(key);
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder()
-                .encryptionKey(key)
+                //.encryptionKey(key)
                 .build();
         return Realm.getInstance(realmConfiguration);
     }

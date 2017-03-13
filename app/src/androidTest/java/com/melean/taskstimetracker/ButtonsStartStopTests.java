@@ -23,7 +23,7 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.AllOf.allOf;
 
 @RunWith(AndroidJUnit4.class)
-public class UITests {
+public class ButtonsStartStopTests {
     private Resources res;
 
     @Rule
@@ -33,13 +33,6 @@ public class UITests {
     @Before
     public void initData(){
          res = testedActivity.getActivity().getResources();
-    }
-
-
-    @Test
-    @LargeTest
-    public void CheckStartingViewsLoaded(){
-        onView(withId(R.id.tasks_list)).check(matches(isDisplayed()));
     }
 
     @Test
