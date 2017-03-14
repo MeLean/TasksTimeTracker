@@ -23,14 +23,18 @@ import com.melean.taskstimetracker.recordTasks.adapters.TasksAdapter;
 import java.util.List;
 
 public class RecordTaskFragment extends Fragment implements RecordTaskContract.View {
+    public static final String TAG = "com.melean.taskstimetracker.recordTasks.recordtaskfragment";
     private RecyclerView mTasksRecycler;
     private RecordTaskPresenter mPresenter;
     private TextView mNoTasks;
+
+
+
     public RecordTaskFragment() {
         // Required empty public constructor
     }
 
-    public static RecordTaskFragment newInstance() {
+    public static RecordTaskFragment getNewInstance() {
         return new RecordTaskFragment();
     }
 

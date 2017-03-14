@@ -2,8 +2,6 @@ package com.melean.taskstimetracker.recordTasks;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -21,7 +19,7 @@ public class RecordTaskActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_task);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_record);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -31,7 +29,7 @@ public class RecordTaskActivity extends AppCompatActivity implements View.OnClic
         }
 
         if (null == savedInstanceState) {
-            initFragment(RecordTaskFragment.newInstance());
+            initFragment();
         }
 
         findViewById(R.id.fab_record).setOnClickListener(this);
@@ -42,14 +40,6 @@ public class RecordTaskActivity extends AppCompatActivity implements View.OnClic
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
-    }
-
-
-    private void initFragment(Fragment recordTaskFragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.frame_container, recordTaskFragment);
-        transaction.commit();
     }
 
     @Override
@@ -73,5 +63,19 @@ public class RecordTaskActivity extends AppCompatActivity implements View.OnClic
         }else if(id == R.id.fab_pause){
             Toast.makeText(RecordTaskActivity.this, "Implement pause", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void initFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        RecordTaskFragment recordTaskFragment =
+                (RecordTaskFragment) fragmentManager.findFragmentByTag(RecordTaskFragment.TAG);
+
+        if(recordTaskFragment == null){
+            recordTaskFragment = RecordTaskFragment.getNewInstance();
+        }
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.frame_container, recordTaskFragment, RecordTaskFragment.TAG);
+        transaction. commitAllowingStateLoss();
     }
 }
