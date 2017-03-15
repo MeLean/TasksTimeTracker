@@ -6,6 +6,7 @@ import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.preference.CheckBoxPreference;
+import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -38,7 +40,7 @@ public class InitialLoadingTests {
 
     @Rule
     public ActivityTestRule<RecordTaskActivity> mActivityRule =
-            new ActivityTestRule<>(RecordTaskActivity.class, false, false);
+            new ActivityTestRule<>(RecordTaskActivity.class, true, true);
 
     @Before
     public void initData(){
@@ -62,37 +64,21 @@ public class InitialLoadingTests {
 
     @Test
     @LargeTest
-    public void CheckStartingViews_WhenHasSomeTasks(){
-        this.prepareTestedViews();
-        mTestViewFragment.showTasksList(mFakeTaskModels);
-        onView(withId(R.id.no_tasks)).check(matches((not(isDisplayed()))));
-        onView(withId(R.id.tasks_list))
-                .check(new RecyclerViewItemCountAssertion(mFakeTaskModels.size()));
-    }
-
-
-
-    private void prepareTestedViews(){
+    public void CheckStartingViews_WhenHasSomeTasks() throws Throwable {
         final RecordTaskActivity activity = mActivityRule.getActivity();
-        try {
+
             mActivityRule.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                            | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-                            | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                            | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                            | WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
-
                     activity.initFragment();
-
+                    mTestViewFragment = (RecordTaskFragment) activity.getSupportFragmentManager()
+                            .findFragmentByTag(RecordTaskFragment.TAG);
                 }
             });
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-        }
 
-        mTestViewFragment = (RecordTaskFragment) activity.getSupportFragmentManager()
-                .findFragmentByTag(RecordTaskFragment.TAG);
+        mTestViewFragment.showTasksList(mFakeTaskModels);
+
+        onView(withId(R.id.no_tasks)).check(matches((not(isDisplayed()))));
+        onView(withId(R.id.tasks_list)).perform(RecyclerViewActions.actionOnItemAtPosition(6,click()));
     }
 }

@@ -11,6 +11,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.melean.taskstimetracker.R;
+import com.melean.taskstimetracker.data.models.TaskModel;
+
+import java.util.List;
 
 public class RecordTaskActivity extends AppCompatActivity implements View.OnClickListener {
 
