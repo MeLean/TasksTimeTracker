@@ -1,4 +1,4 @@
-package com.melean.taskstimetracker.recordTasks;
+package com.melean.taskstimetracker.record_tasks;
 
 
 import android.support.v4.app.Fragment;
@@ -18,7 +18,7 @@ import com.melean.taskstimetracker.data.models.TaskEntityModel;
 import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.data.repositories.ITaskRepository;
 import com.melean.taskstimetracker.data.repositories.TaskRepositoryImplementation;
-import com.melean.taskstimetracker.recordTasks.adapters.TasksAdapter;
+import com.melean.taskstimetracker.record_tasks.adapters.TasksAdapter;
 
 import java.util.List;
 
@@ -27,8 +27,6 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
     private RecyclerView mTasksRecycler;
     private RecordTaskPresenter mPresenter;
     private TextView mNoTasks;
-
-
 
     public RecordTaskFragment() {
         // Required empty public constructor

@@ -1,21 +1,17 @@
 package com.melean.taskstimetracker;
 
 
-import android.app.Activity;
-import android.app.KeyguardManager;
-import android.content.Context;
-import android.content.Intent;
-import android.preference.CheckBoxPreference;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.rule.UiThreadTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.view.WindowManager;
+import android.support.v4.app.FragmentManager;
 
-import com.melean.taskstimetracker.Utils.RecyclerViewItemCountAssertion;
+import com.melean.taskstimetracker.recycler_view_assertions.RecyclerViewItemCountAssertion;
 import com.melean.taskstimetracker.data.models.TaskModel;
-import com.melean.taskstimetracker.recordTasks.RecordTaskActivity;
-import com.melean.taskstimetracker.recordTasks.RecordTaskFragment;
+import com.melean.taskstimetracker.record_tasks.RecordTaskActivity;
+import com.melean.taskstimetracker.record_tasks.RecordTaskFragment;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -36,11 +32,13 @@ import static org.hamcrest.core.IsNot.not;
 public class InitialLoadingTests {
     private List<TaskModel> mEmptyTaskModels;
     private List<TaskModel> mFakeTaskModels;
-    private RecordTaskFragment mTestViewFragment;
 
     @Rule
     public ActivityTestRule<RecordTaskActivity> mActivityRule =
             new ActivityTestRule<>(RecordTaskActivity.class, true, true);
+
+    @Rule
+    public UiThreadTestRule uiThreadTestRule = new UiThreadTestRule();
 
     @Before
     public void initData(){
@@ -54,9 +52,19 @@ public class InitialLoadingTests {
 
 /*    @Test
     @LargeTest
-    public void CheckStartingViews_WhenNoTask(){
-        this.prepareTestedViews();
-        mTestViewFragment.showTasksList(mEmptyTaskModels);
+    public void CheckStartingViews_WhenNoTask() throws Throwable{
+    uiThreadTestRule.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                RecordTaskActivity activity = mActivityRule.getActivity();
+                activity.initFragment();
+                FragmentManager fragmentManager = activity.getSupportFragmentManager();
+                RecordTaskFragment fragment =
+                        (RecordTaskFragment) fragmentManager.findFragmentByTag(RecordTaskFragment.TAG);
+                fragment.showTasksList(mFakeTaskModels);
+            }
+        });
+
         onView(withId(R.id.no_tasks)).check(matches(isDisplayed()));
         onView(withId(R.id.tasks_list))
                 .check(new RecyclerViewItemCountAssertion(mEmptyTaskModels.size()));
@@ -65,20 +73,24 @@ public class InitialLoadingTests {
     @Test
     @LargeTest
     public void CheckStartingViews_WhenHasSomeTasks() throws Throwable {
-        final RecordTaskActivity activity = mActivityRule.getActivity();
+        uiThreadTestRule.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                RecordTaskActivity activity = mActivityRule.getActivity();
+                activity.initFragment();
+                FragmentManager fragmentManager = activity.getSupportFragmentManager();
+                RecordTaskFragment fragment =
+                        (RecordTaskFragment) fragmentManager.findFragmentByTag(RecordTaskFragment.TAG);
+                fragment.showTasksList(mFakeTaskModels);
+            }
+        });
 
-            mActivityRule.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    activity.initFragment();
-                    mTestViewFragment = (RecordTaskFragment) activity.getSupportFragmentManager()
-                            .findFragmentByTag(RecordTaskFragment.TAG);
-                }
-            });
-
-        mTestViewFragment.showTasksList(mFakeTaskModels);
-
+        onView(withId(R.id.tasks_list)).check(matches(isDisplayed()));
         onView(withId(R.id.no_tasks)).check(matches((not(isDisplayed()))));
-        onView(withId(R.id.tasks_list)).perform(RecyclerViewActions.actionOnItemAtPosition(6,click()));
+        onView(withId(R.id.tasks_list))
+                .check(new RecyclerViewItemCountAssertion(mFakeTaskModels.size()));
+        onView(withId(R.id.tasks_list))
+                .perform(RecyclerViewActions
+                        .actionOnItemAtPosition(mFakeTaskModels.size() - 1,click()));
     }
 }

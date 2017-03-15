@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".recordTasks.RecordTaskActivity"
+            android:name=".record_tasks.RecordTaskActivity"
             android:label="@string/title_activity_record_node"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

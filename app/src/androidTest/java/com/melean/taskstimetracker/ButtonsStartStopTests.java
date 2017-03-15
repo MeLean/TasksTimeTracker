@@ -5,7 +5,7 @@ import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.melean.taskstimetracker.recordTasks.RecordTaskActivity;
+import com.melean.taskstimetracker.record_tasks.RecordTaskActivity;
 
 
 import org.junit.Before;

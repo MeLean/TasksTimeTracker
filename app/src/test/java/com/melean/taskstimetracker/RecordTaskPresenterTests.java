@@ -3,8 +3,8 @@ package com.melean.taskstimetracker;
 import com.melean.taskstimetracker.data.models.TaskEntityModel;
 import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.data.repositories.ITaskRepository;
-import com.melean.taskstimetracker.recordTasks.RecordTaskContract;
-import com.melean.taskstimetracker.recordTasks.RecordTaskPresenter;
+import com.melean.taskstimetracker.record_tasks.RecordTaskContract;
+import com.melean.taskstimetracker.record_tasks.RecordTaskPresenter;
 
 import org.junit.Before;
 import org.junit.Test;

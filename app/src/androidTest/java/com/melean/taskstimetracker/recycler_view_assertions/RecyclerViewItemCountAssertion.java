@@ -1,4 +1,4 @@
-package com.melean.taskstimetracker.Utils;
+package com.melean.taskstimetracker.recycler_view_assertions;
 
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.ViewAssertion;

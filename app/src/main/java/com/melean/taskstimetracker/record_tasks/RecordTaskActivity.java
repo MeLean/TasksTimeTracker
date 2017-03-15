@@ -1,4 +1,4 @@
-package com.melean.taskstimetracker.recordTasks;
+package com.melean.taskstimetracker.record_tasks;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -11,9 +11,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.melean.taskstimetracker.R;
-import com.melean.taskstimetracker.data.models.TaskModel;
-
-import java.util.List;
 
 public class RecordTaskActivity extends AppCompatActivity implements View.OnClickListener {
 

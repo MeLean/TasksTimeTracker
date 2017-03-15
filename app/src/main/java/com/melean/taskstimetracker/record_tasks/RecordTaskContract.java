@@ -1,4 +1,4 @@
-package com.melean.taskstimetracker.recordTasks;
+package com.melean.taskstimetracker.record_tasks;
 
 import com.melean.taskstimetracker.data.models.EmployeeModel;
 import com.melean.taskstimetracker.data.models.TaskModel;
