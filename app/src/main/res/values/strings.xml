@@ -11,5 +11,8 @@
     <string name="pause">fab_pause</string>
     <string name="start">fab_start</string>
     <string name="save">fab_save</string>
-    <string name="no_tasks">There are no tasks, please enter some tasks!</string>
+    <string name="no_tasks">There are no tasks, please enter some!</string>
+    <string name="no_employees">There is no employees, please enter some!</string>
+    <string name="add_employee">Add Employee</string>
+    <string name="add_task">Add Task</string>
 </resources>

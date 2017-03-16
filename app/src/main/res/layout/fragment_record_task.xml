@@ -1,37 +1,79 @@
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.melean.taskstimetracker.record_tasks.RecordTaskFragment">
 
-    <TextClock
+    <Chronometer
         android:id="@+id/timer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="22sp"
         />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center"
-        >
-
-        <TextView
-            android:id="@+id/no_tasks"
-            android:layout_width="match_parent"
+        android:layout_below="@+id/timer"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:baselineAligned="false">
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/no_tasks"
-            />
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_gravity="top|center"
+            >
+            <Button
+                android:id="@+id/btn_add_task"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/add_task"
+                />
+            <TextView
+                android:id="@+id/no_tasks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_tasks"
+                />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/tasks_list"
-            android:scrollbars="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/tasks_list"
+                android:scrollbars="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_gravity="top|center"
+            >
+            <Button
+                android:id="@+id/btn_add_emp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/add_employee"
+                />
+            <TextView
+                android:id="@+id/no_employees"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_employees"
+                />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/employees_list"
+                android:scrollbars="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
     </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

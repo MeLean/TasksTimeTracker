@@ -8,6 +8,7 @@ import android.support.test.rule.UiThreadTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.app.FragmentManager;
 
+import com.melean.taskstimetracker.data.models.EmployeeModel;
 import com.melean.taskstimetracker.recycler_view_assertions.RecyclerViewItemCountAssertion;
 import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.record_tasks.RecordTaskActivity;
@@ -30,7 +31,7 @@ import static org.hamcrest.core.IsNot.not;
 
 @RunWith(AndroidJUnit4.class)
 public class InitialLoadingTests {
-    private List<TaskModel> mEmptyTaskModels;
+    private List<EmployeeModel> mFakeEmployeeModels;
     private List<TaskModel> mFakeTaskModels;
 
     @Rule
@@ -42,33 +43,14 @@ public class InitialLoadingTests {
 
     @Before
     public void initData(){
-        mEmptyTaskModels = new ArrayList<>();
+        mFakeEmployeeModels = new ArrayList<>();
         mFakeTaskModels = new ArrayList<>();
 
         for (int i = 0; i <3; i++){
             mFakeTaskModels.add(new TaskModel("Task " + i));
+            mFakeEmployeeModels.add(new EmployeeModel("Employee " + i));
         }
     }
-
-/*    @Test
-    @LargeTest
-    public void CheckStartingViews_WhenNoTask() throws Throwable{
-    uiThreadTestRule.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                RecordTaskActivity activity = mActivityRule.getActivity();
-                activity.initFragment();
-                FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                RecordTaskFragment fragment =
-                        (RecordTaskFragment) fragmentManager.findFragmentByTag(RecordTaskFragment.TAG);
-                fragment.showTasksList(mFakeTaskModels);
-            }
-        });
-
-        onView(withId(R.id.no_tasks)).check(matches(isDisplayed()));
-        onView(withId(R.id.tasks_list))
-                .check(new RecyclerViewItemCountAssertion(mEmptyTaskModels.size()));
-    }*/
 
     @Test
     @LargeTest
@@ -82,6 +64,7 @@ public class InitialLoadingTests {
                 RecordTaskFragment fragment =
                         (RecordTaskFragment) fragmentManager.findFragmentByTag(RecordTaskFragment.TAG);
                 fragment.showTasksList(mFakeTaskModels);
+                fragment.showEmployeesList(mFakeEmployeeModels);
             }
         });
 
@@ -89,6 +72,8 @@ public class InitialLoadingTests {
         onView(withId(R.id.no_tasks)).check(matches((not(isDisplayed()))));
         onView(withId(R.id.tasks_list))
                 .check(new RecyclerViewItemCountAssertion(mFakeTaskModels.size()));
+        onView(withId(R.id.employees_list))
+                .check(new RecyclerViewItemCountAssertion(mFakeEmployeeModels.size()));
         onView(withId(R.id.tasks_list))
                 .perform(RecyclerViewActions
                         .actionOnItemAtPosition(mFakeTaskModels.size() - 1,click()));

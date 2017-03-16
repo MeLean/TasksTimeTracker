@@ -18,15 +18,16 @@ import com.melean.taskstimetracker.data.models.TaskEntityModel;
 import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.data.repositories.ITaskRepository;
 import com.melean.taskstimetracker.data.repositories.TaskRepositoryImplementation;
+import com.melean.taskstimetracker.record_tasks.adapters.EmployeeAdapter;
 import com.melean.taskstimetracker.record_tasks.adapters.TasksAdapter;
 
 import java.util.List;
 
 public class RecordTaskFragment extends Fragment implements RecordTaskContract.View {
     public static final String TAG = "com.melean.taskstimetracker.recordTasks.recordtaskfragment";
-    private RecyclerView mTasksRecycler;
     private RecordTaskPresenter mPresenter;
-    private TextView mNoTasks;
+    private RecyclerView mTasksRecycler, mEmployeesRecycler;
+    private TextView mNoTasks, mNoEmployees;
 
     public RecordTaskFragment() {
         // Required empty public constructor
@@ -40,31 +41,27 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_record_task, container, false);
+        View view = inflater.inflate(R.layout.fragment_record_task, container, false);
         ITaskRepository repository =
                 new TaskRepositoryImplementation(new RealmDatabase(getContext()));
         mPresenter = new RecordTaskPresenter(this, repository);
         mTasksRecycler = (RecyclerView) view.findViewById(R.id.tasks_list);
+        mEmployeesRecycler = (RecyclerView) view.findViewById(R.id.employees_list);
         mNoTasks = (TextView) view.findViewById(R.id.no_tasks);
-
+        mNoEmployees = (TextView) view.findViewById(R.id.no_employees);
         mPresenter.loadTasks();
-        //mPresenter.loadEmployees();
+        mPresenter.loadEmployees();
         return view;
     }
 
     @Override
     public void showTasksList(List<TaskModel> tasks) {
-        if (tasks.size() > 0){
-            mTasksRecycler.setAdapter(new TasksAdapter(tasks));
-            mTasksRecycler.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
-            mTasksRecycler.setItemAnimator(new DefaultItemAnimator());
-            mNoTasks.setVisibility(View.GONE);
-        }
+        manageRecycler( mTasksRecycler, new TasksAdapter(tasks), mNoTasks);
     }
 
     @Override
     public void showEmployeesList(List<EmployeeModel> employees) {
-
+        manageRecycler(mEmployeesRecycler, new EmployeeAdapter(employees), mNoEmployees);
     }
 
     @Override
@@ -80,5 +77,14 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
     @Override
     public TaskEntityModel getTaskModel() {
         return null;
+    }
+
+    private void manageRecycler(RecyclerView recyclerView, RecyclerView.Adapter adapter, TextView noItemsView) {
+        if (adapter.getItemCount() > 0){
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            noItemsView.setVisibility(View.GONE);
+        }
     }
 }
