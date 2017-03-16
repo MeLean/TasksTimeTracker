@@ -40,6 +40,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/no_tasks"
+                android:padding="8dp"
+                android:gravity="center"
                 />
 
             <android.support.v7.widget.RecyclerView
@@ -67,6 +69,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/no_employees"
+                android:padding="8dp"
+                android:gravity="center"
                 />
 
             <android.support.v7.widget.RecyclerView

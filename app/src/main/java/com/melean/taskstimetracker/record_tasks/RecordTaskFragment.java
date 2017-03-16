@@ -56,12 +56,17 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
 
     @Override
     public void showTasksList(List<TaskModel> tasks) {
-        manageRecycler( mTasksRecycler, new TasksAdapter(tasks), mNoTasks);
+        if (tasks.size() > 0) {
+            manageRecycler(mTasksRecycler, new TasksAdapter(tasks), mNoTasks);
+        }
     }
 
     @Override
     public void showEmployeesList(List<EmployeeModel> employees) {
-        manageRecycler(mEmployeesRecycler, new EmployeeAdapter(employees), mNoEmployees);
+        if (employees.size() > 0) {
+            manageRecycler(mEmployeesRecycler, new EmployeeAdapter(employees), mNoEmployees);
+        }
+
     }
 
     @Override
@@ -80,11 +85,11 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
     }
 
     private void manageRecycler(RecyclerView recyclerView, RecyclerView.Adapter adapter, TextView noItemsView) {
-        if (adapter.getItemCount() > 0){
-            recyclerView.setAdapter(adapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            noItemsView.setVisibility(View.GONE);
-        }
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        noItemsView.setVisibility(View.GONE);
+
     }
 }
