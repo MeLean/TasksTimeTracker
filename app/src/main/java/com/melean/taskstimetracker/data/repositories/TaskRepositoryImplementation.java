@@ -2,6 +2,7 @@ package com.melean.taskstimetracker.data.repositories;
 
 import android.support.annotation.NonNull;
 
+import com.melean.taskstimetracker.constants.Preferences;
 import com.melean.taskstimetracker.data.database.RealmDatabase.RealmDatabase;
 import com.melean.taskstimetracker.data.database.RealmObjects.TaskEntityRealmObject;
 import com.melean.taskstimetracker.data.database.RealmObjects.TaskRealmObject;
@@ -20,7 +21,7 @@ import io.realm.exceptions.RealmException;
 public class TaskRepositoryImplementation implements ITaskRepository{
     private RealmDatabase mRealmDatabase;
     private SimpleDateFormat nDateFormatter =
-            new SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.getDefault());
+            new SimpleDateFormat(Preferences.ENTITY_DATE_FORMAT, Locale.getDefault());
 
     public TaskRepositoryImplementation(RealmDatabase realmDatabase) {
         this.mRealmDatabase = realmDatabase;

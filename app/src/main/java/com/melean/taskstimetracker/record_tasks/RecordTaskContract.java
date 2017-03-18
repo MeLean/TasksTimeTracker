@@ -27,7 +27,5 @@ public interface RecordTaskContract {
         void startRecording();
 
         void stopRecording();
-
-
     }
 }

@@ -1,6 +1,8 @@
 package com.melean.taskstimetracker.record_tasks;
 
 
+import android.os.SystemClock;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -9,9 +11,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Chronometer;
 import android.widget.TextView;
 
 import com.melean.taskstimetracker.R;
+import com.melean.taskstimetracker.constants.Preferences;
 import com.melean.taskstimetracker.data.database.RealmDatabase.RealmDatabase;
 import com.melean.taskstimetracker.data.models.EmployeeModel;
 import com.melean.taskstimetracker.data.models.TaskEntityModel;
@@ -21,13 +25,18 @@ import com.melean.taskstimetracker.data.repositories.TaskRepositoryImplementatio
 import com.melean.taskstimetracker.record_tasks.adapters.EmployeeAdapter;
 import com.melean.taskstimetracker.record_tasks.adapters.TasksAdapter;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class RecordTaskFragment extends Fragment implements RecordTaskContract.View {
     public static final String TAG = "com.melean.taskstimetracker.recordTasks.recordtaskfragment";
     private RecordTaskPresenter mPresenter;
+    private Chronometer mTimer;
     private RecyclerView mTasksRecycler, mEmployeesRecycler;
     private TextView mNoTasks, mNoEmployees;
+    private String selectedTaskName, selectedEmployeeName;
+    boolean isTaskInterrupted = false;
 
     public RecordTaskFragment() {
         // Required empty public constructor
@@ -45,6 +54,7 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
         ITaskRepository repository =
                 new TaskRepositoryImplementation(new RealmDatabase(getContext()));
         mPresenter = new RecordTaskPresenter(this, repository);
+        mTimer = (Chronometer)view.findViewById(R.id.timer);
         mTasksRecycler = (RecyclerView) view.findViewById(R.id.tasks_list);
         mEmployeesRecycler = (RecyclerView) view.findViewById(R.id.employees_list);
         mNoTasks = (TextView) view.findViewById(R.id.no_tasks);
@@ -66,7 +76,6 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
         if (employees.size() > 0) {
             manageRecycler(mEmployeesRecycler, new EmployeeAdapter(employees), mNoEmployees);
         }
-
     }
 
     @Override
@@ -81,15 +90,21 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
 
     @Override
     public TaskEntityModel getTaskModel() {
-        return null;
+        long timePassed = SystemClock.elapsedRealtime() - mTimer.getBase(); //todo set base when chronometter starts
+        SimpleDateFormat df = new SimpleDateFormat(Preferences.ENTITY_DATE_FORMAT, Locale.getDefault());
+        return new TaskEntityModel(
+                selectedTaskName,
+                selectedEmployeeName,
+                timePassed,
+                isTaskInterrupted,
+                df.format(System.currentTimeMillis())
+        );
     }
 
     private void manageRecycler(RecyclerView recyclerView, RecyclerView.Adapter adapter, TextView noItemsView) {
-
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         noItemsView.setVisibility(View.GONE);
-
     }
 }

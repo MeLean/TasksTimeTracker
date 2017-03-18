@@ -48,5 +48,10 @@ public class ButtonsStartStopTests {
         onView(withId(R.id.fab_record)).perform(click());
         onView(withId(R.id.fab_pause)).check(matches(not(isDisplayed())));
         onView(withContentDescription(res.getString(R.string.start))).check(matches(isDisplayed()));
+
+        onView(withId(R.id.fab_record)).perform(click());
+        onView(withId(R.id.fab_pause)).perform(click());
+        onView(withContentDescription(res.getString(R.string.start))).check(matches(isDisplayed()));
+
     }
 }
