@@ -108,7 +108,7 @@ public class InitialLoadingTests {
         );
 
         //check employee property
-        onView(withId(R.id.tasks_list))
+        onView(withId(R.id.employees_list))
                 .perform(RecyclerViewActions.scrollToPosition(employeeLastItemPosition))
                     .check(matches(
                             RecyclerMatcher.atPosition(employeeLastItemPosition, withText(mCreatedTask.getEmployeeName())))

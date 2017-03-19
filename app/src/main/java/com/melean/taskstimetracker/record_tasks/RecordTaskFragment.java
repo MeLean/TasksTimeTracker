@@ -2,7 +2,6 @@ package com.melean.taskstimetracker.record_tasks;
 
 
 import android.os.SystemClock;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -26,6 +25,7 @@ import com.melean.taskstimetracker.record_tasks.adapters.EmployeeAdapter;
 import com.melean.taskstimetracker.record_tasks.adapters.TasksAdapter;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -61,20 +61,36 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
         mNoEmployees = (TextView) view.findViewById(R.id.no_employees);
         mPresenter.loadTasks();
         mPresenter.loadEmployees();
+
+        //todo delete me just testing
+        List<EmployeeModel> employees = new ArrayList<>();
+        employees.add(new EmployeeModel("Moncho"));
+        employees.add(new EmployeeModel("Pencho"));
+        employees.add(new EmployeeModel("Gencho"));
+        manageRecycler(mEmployeesRecycler, new EmployeeAdapter(getContext(), employees), mNoEmployees);
+
+        List<TaskModel> tasks = new ArrayList<>();
+        tasks.add(new TaskModel("Task 1"));
+        tasks.add(new TaskModel("Task 2"));
+        tasks.add(new TaskModel("Task 3"));
+        manageRecycler(mTasksRecycler, new TasksAdapter(getContext(), tasks), mNoTasks);
+
+        //todo delete me just testing
+
         return view;
     }
 
     @Override
     public void showTasksList(List<TaskModel> tasks) {
         if (tasks.size() > 0) {
-            manageRecycler(mTasksRecycler, new TasksAdapter(tasks), mNoTasks);
+            manageRecycler(mTasksRecycler, new TasksAdapter(getContext(), tasks), mNoTasks);
         }
     }
 
     @Override
     public void showEmployeesList(List<EmployeeModel> employees) {
         if (employees.size() > 0) {
-            manageRecycler(mEmployeesRecycler, new EmployeeAdapter(employees), mNoEmployees);
+            manageRecycler(mEmployeesRecycler, new EmployeeAdapter(getContext(), employees), mNoEmployees);
         }
     }
 
@@ -92,6 +108,7 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
     public TaskEntityModel getTaskModel() {
         long timePassed = SystemClock.elapsedRealtime() - mTimer.getBase(); //todo set base when chronometter starts
         SimpleDateFormat df = new SimpleDateFormat(Preferences.ENTITY_DATE_FORMAT, Locale.getDefault());
+        //todo implement onClickListeners in recyrclers
         return new TaskEntityModel(
                 selectedTaskName,
                 selectedEmployeeName,

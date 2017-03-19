@@ -1,48 +1,34 @@
 package com.melean.taskstimetracker.record_tasks.adapters;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.melean.taskstimetracker.R;
 import com.melean.taskstimetracker.data.models.EmployeeModel;
+import com.melean.taskstimetracker.record_tasks.adapters.view_holders.EmployeeViewHolder;
 
 import java.util.List;
 
-public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.EmployeeViewHolder> {
-    private List<EmployeeModel> employeeList;
+public class EmployeeAdapter extends BaseRecyclerAdapter<EmployeeModel>{
+    public EmployeeAdapter(Context context, List<EmployeeModel> items) {
+        super(context, items);
+    }
 
     @Override
-    public EmployeeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
+    public RecyclerView.ViewHolder setViewHolder(ViewGroup parent, OnRecyclerItemClicked onRecyclerItemClicked) {
+        final View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_employee_row, parent, false);
-
-        return new EmployeeViewHolder(itemView);
+        return new EmployeeViewHolder(view, onRecyclerItemClicked);
     }
 
     @Override
-    public void onBindViewHolder(EmployeeViewHolder holder, int position) {
-        holder.employeeName.setText(
-                employeeList.get(position).getEmployeeName()
-        );
-    }
-
-    @Override
-    public int getItemCount() {
-        return employeeList.size();
-    }
-
-    public class EmployeeViewHolder extends RecyclerView.ViewHolder {
-        public TextView employeeName;
-        public EmployeeViewHolder(View view) {
-            super(view);
-            employeeName = (TextView) view.findViewById(R.id.employee_name);
-        }
-    }
-
-    public EmployeeAdapter(List<EmployeeModel> employeeList) {
-        this.employeeList = employeeList;
+    public void onBindData(RecyclerView.ViewHolder holder, EmployeeModel val) {
+        EmployeeViewHolder empHolder = (EmployeeViewHolder)holder;
+        empHolder.getEmployeeName().setText(val.getEmployeeName());
     }
 }
