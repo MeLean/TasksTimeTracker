@@ -13,8 +13,9 @@ import com.melean.taskstimetracker.record_tasks.view_holders.TaskViewHolder;
 import java.util.List;
 
 public class TasksAdapter extends BaseRecyclerAdapter<TaskModel> {
-    public TasksAdapter(Context context, List<TaskModel> items) {
-        super(context, items);
+
+    public TasksAdapter(Context context, List<TaskModel> items, RecyclerView tasksRecycler) {
+        super(context, items, tasksRecycler);
     }
 
     @Override

@@ -61,20 +61,36 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
         mNoEmployees = (TextView) view.findViewById(R.id.no_employees);
         mPresenter.loadTasks();
         mPresenter.loadEmployees();
+
+        //todo delete me just testing
+        List<EmployeeModel> employees = new ArrayList<>();
+        employees.add(new EmployeeModel("Moncho"));
+        employees.add(new EmployeeModel("Pencho"));
+        employees.add(new EmployeeModel("Gencho"));
+        manageRecycler(mEmployeesRecycler, new EmployeeAdapter(getContext(), employees, mTasksRecycler), mNoEmployees);
+
+        List<TaskModel> tasks = new ArrayList<>();
+        tasks.add(new TaskModel("Task 1"));
+        tasks.add(new TaskModel("Task 2"));
+        tasks.add(new TaskModel("Task 3"));
+        manageRecycler(mTasksRecycler, new TasksAdapter(getContext(), tasks, mEmployeesRecycler), mNoTasks);
+
+        //todo delete me just testing
+
         return view;
     }
 
     @Override
     public void showTasksList(List<TaskModel> tasks) {
         if (tasks.size() > 0) {
-            manageRecycler(mTasksRecycler, new TasksAdapter(getContext(), tasks), mNoTasks);
+            manageRecycler(mTasksRecycler, new TasksAdapter(getContext(), tasks, mTasksRecycler), mNoTasks);
         }
     }
 
     @Override
     public void showEmployeesList(List<EmployeeModel> employees) {
         if (employees.size() > 0) {
-            manageRecycler(mEmployeesRecycler, new EmployeeAdapter(getContext(), employees), mNoEmployees);
+            manageRecycler(mEmployeesRecycler, new EmployeeAdapter(getContext(), employees, mEmployeesRecycler), mNoEmployees);
         }
     }
 

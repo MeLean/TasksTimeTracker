@@ -4,7 +4,8 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
+import com.melean.taskstimetracker.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +14,9 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
 
     private Context mContext;
     private List<T> items;
+    private RecyclerView mRecyclerView;
     private OnRecyclerItemClicked onRecyclerItemClicked;
-    private int getLastSelectedItemPosition = -1;
+    private int lastSelectedPosition = -1;
 
 
     public abstract RecyclerView.ViewHolder setViewHolder(ViewGroup parent , OnRecyclerItemClicked onRecyclerItemClicked);
@@ -23,10 +25,11 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
 
     //public abstract OnRecyclerItemClicked onGetRecyclerItemClickListener();
 
-    public BaseRecyclerAdapter(Context context, List<T> items){
+    public BaseRecyclerAdapter(Context context, List<T> items, RecyclerView recyclerView){
         this.mContext = context;
         this.items = items;
         onRecyclerItemClicked = onGetRecyclerItemClickListener();
+        mRecyclerView = recyclerView;
     }
 
     @Override
@@ -53,8 +56,8 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
         return items.get(position);
     }
 
-    public int getLastSelectedItemPosition(){
-        return getLastSelectedItemPosition;
+    public int getLastSelectedPosition(){
+        return lastSelectedPosition;
     }
 
     public interface OnRecyclerItemClicked{
@@ -65,12 +68,18 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
         return new OnRecyclerItemClicked() {
             @Override
             public void onItemClicked(View view, int position) {
-                getLastSelectedItemPosition = position;
-                view.setSelected(true);
-                notifyItemChanged(position);
-                //todo remove toast
-                Toast.makeText(mContext, "You picked item at: " + (position + 1) , Toast.LENGTH_SHORT).show();
-                //todo think if selected position must be change
+                if(lastSelectedPosition != -1){
+                    //deselect previously clicked item
+                    RecyclerView.ViewHolder previouslyClickedHolder =
+                            mRecyclerView.findViewHolderForAdapterPosition(lastSelectedPosition);
+                    previouslyClickedHolder.itemView.setBackgroundResource(R.drawable.shape_item_not_selected);
+                } else if(lastSelectedPosition != position){
+                    lastSelectedPosition = position;
+                    view.setBackgroundResource(R.drawable.shape_item_selected);
+                } else {
+                    lastSelectedPosition = -1;
+                    view.setBackgroundResource(R.drawable.shape_item_not_selected);
+                }
             }
         };
     }
