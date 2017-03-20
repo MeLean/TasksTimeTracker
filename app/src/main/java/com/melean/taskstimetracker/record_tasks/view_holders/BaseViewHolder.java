@@ -1,4 +1,4 @@
-package com.melean.taskstimetracker.record_tasks.adapters.view_holders;
+package com.melean.taskstimetracker.record_tasks.view_holders;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

@@ -8,8 +8,7 @@ import android.view.ViewGroup;
 
 import com.melean.taskstimetracker.R;
 import com.melean.taskstimetracker.data.models.EmployeeModel;
-import com.melean.taskstimetracker.record_tasks.adapters.view_holders.EmployeeViewHolder;
-import com.melean.taskstimetracker.record_tasks.adapters.view_holders.EmployeeViewHolderImp;
+import com.melean.taskstimetracker.record_tasks.view_holders.EmployeeViewHolder;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class EmployeeAdapter extends BaseRecyclerAdapter<EmployeeModel>{
     public RecyclerView.ViewHolder setViewHolder(ViewGroup parent, OnRecyclerItemClicked onRecyclerItemClicked) {
         final View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_employee_row, parent, false);
-        return new EmployeeViewHolderImp(view, onRecyclerItemClicked);
+        return new EmployeeViewHolder(view, onRecyclerItemClicked);
     }
 
     @Override

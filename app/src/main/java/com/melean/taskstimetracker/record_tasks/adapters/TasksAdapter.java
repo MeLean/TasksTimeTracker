@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.melean.taskstimetracker.R;
 import com.melean.taskstimetracker.data.models.TaskModel;
-import com.melean.taskstimetracker.record_tasks.adapters.view_holders.TaskViewHolder;
+import com.melean.taskstimetracker.record_tasks.view_holders.TaskViewHolder;
 
 import java.util.List;
 
