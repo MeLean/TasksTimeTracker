@@ -106,15 +106,15 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
 
     @Override
     public TaskEntityModel getTaskModel() {
-        long timePassed = SystemClock.elapsedRealtime() - mTimer.getBase(); //todo set base when chronometter starts
-        SimpleDateFormat df = new SimpleDateFormat(Preferences.ENTITY_DATE_FORMAT, Locale.getDefault());
-        //todo implement onClickListeners in recyrclers
+        long timePassed = SystemClock.elapsedRealtime() - mTimer.getBase(); //todo set base when chronometer starts
+        SimpleDateFormat dateFormat = new SimpleDateFormat(Preferences.ENTITY_DATE_FORMAT, Locale.getDefault());
+        //todo implement onClickListeners in recyclers
         return new TaskEntityModel(
                 selectedTaskName,
                 selectedEmployeeName,
                 timePassed,
                 isTaskInterrupted,
-                df.format(System.currentTimeMillis())
+                dateFormat.format(System.currentTimeMillis())
         );
     }
 
