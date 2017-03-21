@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentManager;
 import com.melean.taskstimetracker.data.models.EmployeeModel;
 import com.melean.taskstimetracker.data.models.TaskEntityModel;
 import com.melean.taskstimetracker.recycler_view_utils.RecyclerMatcher;
-import com.melean.taskstimetracker.recycler_view_utils.RecyclerViewItemCountAssertion;
 import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.record_tasks.RecordTaskActivity;
 import com.melean.taskstimetracker.record_tasks.RecordTaskFragment;
@@ -78,6 +77,8 @@ public class InitialLoadingTests {
                 .check(new RecyclerViewItemCountAssertion(mFakeEmployeeModels.size()));
 
         int taskLastItemPosition = mFakeTaskModels.size() - 1;
+
+
 
         onView(withId(R.id.tasks_list))
                 .perform(RecyclerViewActions

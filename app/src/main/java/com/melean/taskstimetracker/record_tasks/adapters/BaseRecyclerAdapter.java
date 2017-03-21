@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +19,6 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
     public abstract RecyclerView.ViewHolder setViewHolder(ViewGroup parent, OnRecyclerItemClicked onRecyclerItemClicked);
 
     public abstract void onBindData(RecyclerView.ViewHolder holder, T val);
-
-    //public abstract OnRecyclerItemClicked onGetRecyclerItemClickListener();
 
     public BaseRecyclerAdapter(Context context, List<T> items) {
         this.mContext = context;
@@ -74,6 +71,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
                         setViewSelected(view);
                     }else{
                         view.setSelected(false);
+                        lastSelectedView = null;
                     }
                 } else{
                     setViewSelected(view);

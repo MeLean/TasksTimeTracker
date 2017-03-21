@@ -61,24 +61,6 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
         mNoEmployees = (TextView) view.findViewById(R.id.no_employees);
         mPresenter.loadTasks();
         mPresenter.loadEmployees();
-
-        //todo delete me just testing
-        List<EmployeeModel> employees = new ArrayList<>();
-        employees.add(new EmployeeModel("Moncho"));
-        employees.add(new EmployeeModel("Pencho"));
-        employees.add(new EmployeeModel("Gencho"));
-        manageRecycler(mEmployeesRecycler,
-                new EmployeeAdapter(getContext(), employees), mNoEmployees);
-
-        List<TaskModel> tasks = new ArrayList<>();
-        tasks.add(new TaskModel("Task 1"));
-        tasks.add(new TaskModel("Task 2"));
-        tasks.add(new TaskModel("Task 3"));
-        manageRecycler(mTasksRecycler,
-                new TasksAdapter(getContext(), tasks), mNoTasks);
-
-        //todo delete me just testing
-
         return view;
     }
 
