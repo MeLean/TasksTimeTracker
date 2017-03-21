@@ -13,6 +13,7 @@ import com.melean.taskstimetracker.recycler_view_utils.RecyclerMatcher;
 import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.record_tasks.RecordTaskActivity;
 import com.melean.taskstimetracker.record_tasks.RecordTaskFragment;
+import com.melean.taskstimetracker.recycler_view_utils.RecyclerViewItemCountAssertion;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -34,7 +35,7 @@ import static org.hamcrest.core.IsNot.not;
 public class InitialLoadingTests {
     private List<EmployeeModel> mFakeEmployeeModels;
     private List<TaskModel> mFakeTaskModels;
-    private TaskEntityModel mCreatedTask;
+    private TaskEntityModel mCreatedTaskEntity;
     @Rule
     public ActivityTestRule<RecordTaskActivity> mActivityRule =
             new ActivityTestRule<>(RecordTaskActivity.class, true, true);
@@ -76,13 +77,11 @@ public class InitialLoadingTests {
         onView(withId(R.id.employees_list))
                 .check(new RecyclerViewItemCountAssertion(mFakeEmployeeModels.size()));
 
-        int taskLastItemPosition = mFakeTaskModels.size() - 1;
-
-
+        int taskLastTaskPosition = mFakeTaskModels.size() - 1;
 
         onView(withId(R.id.tasks_list))
                 .perform(RecyclerViewActions
-                        .actionOnItemAtPosition(taskLastItemPosition, click()));
+                        .actionOnItemAtPosition(taskLastTaskPosition, click()));
 
         int employeeLastItemPosition = mFakeEmployeeModels.size() - 1;
 
@@ -101,24 +100,28 @@ public class InitialLoadingTests {
             }
         });
 
+
+
         //check task property
         onView(withId(R.id.tasks_list))
-            .perform(RecyclerViewActions.scrollToPosition(taskLastItemPosition))
+            .perform(RecyclerViewActions.scrollToPosition(taskLastTaskPosition))
                 .check(matches(
-                        RecyclerMatcher.atPosition(taskLastItemPosition, withText(mCreatedTask.getTaskName())))
+                        RecyclerMatcher.atPosition(
+                                taskLastTaskPosition,
+                                withText(mCreatedTaskEntity.getTaskName())))
         );
 
         //check employee property
         onView(withId(R.id.employees_list))
                 .perform(RecyclerViewActions.scrollToPosition(employeeLastItemPosition))
                     .check(matches(
-                            RecyclerMatcher.atPosition(employeeLastItemPosition, withText(mCreatedTask.getEmployeeName())))
+                            RecyclerMatcher.atPosition(
+                                    employeeLastItemPosition,
+                                    withText(mCreatedTaskEntity.getEmployeeName())))
         );
-
-
     }
 
     private void setTaskEntity(TaskEntityModel createdTask){
-        mCreatedTask = createdTask;
+        mCreatedTaskEntity = createdTask;
     }
 }

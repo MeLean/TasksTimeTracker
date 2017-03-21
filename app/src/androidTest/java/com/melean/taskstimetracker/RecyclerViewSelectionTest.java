@@ -1,4 +1,4 @@
-package com.melean.taskstimetracker.recycler_view_utils;
+package com.melean.taskstimetracker;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.rule.UiThreadTestRule;
@@ -31,9 +31,9 @@ public class RecyclerViewSelectionTest {
     @Before
     public void initData(){
         employees = new ArrayList<>();
-        employees.add(new EmployeeModel("Moncho"));
-        employees.add(new EmployeeModel("Pencho"));
-        employees.add(new EmployeeModel("Gencho"));
+        employees.add(new EmployeeModel("Employee 1"));
+        employees.add(new EmployeeModel("Employee 2"));
+        employees.add(new EmployeeModel("Employee 3"));
 
     /*    RecyclerViewSelectionTest(mEmployeesRecycler,
                 new EmployeeAdapter(getContext(), employees), mNoEmployees);*/

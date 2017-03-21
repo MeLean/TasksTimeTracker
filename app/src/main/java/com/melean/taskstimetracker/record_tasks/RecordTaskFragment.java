@@ -21,6 +21,7 @@ import com.melean.taskstimetracker.data.models.TaskEntityModel;
 import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.data.repositories.ITaskRepository;
 import com.melean.taskstimetracker.data.repositories.TaskRepositoryImplementation;
+import com.melean.taskstimetracker.record_tasks.adapters.BaseRecyclerAdapter;
 import com.melean.taskstimetracker.record_tasks.adapters.EmployeeAdapter;
 import com.melean.taskstimetracker.record_tasks.adapters.TasksAdapter;
 
@@ -35,7 +36,6 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
     private Chronometer mTimer;
     private RecyclerView mTasksRecycler, mEmployeesRecycler;
     private TextView mNoTasks, mNoEmployees;
-    private String selectedTaskName, selectedEmployeeName;
     boolean isTaskInterrupted = false;
 
     public RecordTaskFragment() {
@@ -61,6 +61,27 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
         mNoEmployees = (TextView) view.findViewById(R.id.no_employees);
         mPresenter.loadTasks();
         mPresenter.loadEmployees();
+
+        //todo delete this
+        List<TaskModel> tasks = new ArrayList<>();
+        tasks.add(new TaskModel("Task 1"));
+        tasks.add(new TaskModel("Task 2"));
+        tasks.add(new TaskModel("Task 3"));
+
+        manageRecycler(mTasksRecycler,
+                new TasksAdapter(getContext(), tasks), mNoTasks);
+
+        List<EmployeeModel> emps = new ArrayList<>();
+        emps.add(new EmployeeModel("Employee 1"));
+        emps.add(new EmployeeModel("Employee 2"));
+        emps.add(new EmployeeModel("Employee 3"));
+
+        manageRecycler(mEmployeesRecycler,
+                new EmployeeAdapter(getContext(), emps), mNoEmployees);
+        //todo delete this
+
+
+
         return view;
     }
 
@@ -95,7 +116,13 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
         long timePassed = SystemClock.elapsedRealtime() - mTimer.getBase(); //todo set base when chronometer starts
         SimpleDateFormat dateFormat =
                 new SimpleDateFormat(Preferences.ENTITY_DATE_FORMAT, Locale.getDefault());
-        //todo implement onClickListeners in recyclers
+
+        String selectedTaskName =
+                getSelectedElementString(mTasksRecycler);
+
+        String selectedEmployeeName =
+                getSelectedElementString(mEmployeesRecycler);
+
         return new TaskEntityModel(
                 selectedTaskName,
                 selectedEmployeeName,
@@ -105,9 +132,37 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
         );
     }
 
+    private String getSelectedElementString(
+            RecyclerView recyclerView) {
+
+        BaseRecyclerAdapter adapter = (BaseRecyclerAdapter) recyclerView.getAdapter();
+        View view =  adapter.getLastSelectedView();
+        int id = -1;
+        if (adapter instanceof TasksAdapter){
+           id = R.id.task_name;
+        }else if(adapter instanceof EmployeeAdapter){
+            id = R.id.employee_name;
+        }
+
+        boolean check_b1 = adapter instanceof TasksAdapter;
+        boolean check_b2 = adapter instanceof EmployeeAdapter;
+
+        int check1 = id = R.id.task_name;
+        int check2 = R.id.employee_name;
+
+
+        TextView name = (TextView) view.findViewById(id);
+        if(name != null){
+            return name.getText().toString();
+        }
+
+        return null;
+
+    }
+
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
         this.setRetainInstance(true);
     }
 

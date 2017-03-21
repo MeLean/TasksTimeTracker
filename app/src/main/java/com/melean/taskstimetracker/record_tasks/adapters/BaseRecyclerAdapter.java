@@ -84,4 +84,8 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
         view.setSelected(true);
         lastSelectedView = view;
     }
+
+    public View getLastSelectedView() {
+        return lastSelectedView;
+    }
 }
