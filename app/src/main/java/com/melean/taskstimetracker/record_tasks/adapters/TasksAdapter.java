@@ -14,8 +14,8 @@ import java.util.List;
 
 public class TasksAdapter extends BaseRecyclerAdapter<TaskModel> {
 
-    public TasksAdapter(Context context, List<TaskModel> items, RecyclerView tasksRecycler) {
-        super(context, items, tasksRecycler);
+    public TasksAdapter(Context context, List<TaskModel> items) {
+        super(context, items);
     }
 
     @Override

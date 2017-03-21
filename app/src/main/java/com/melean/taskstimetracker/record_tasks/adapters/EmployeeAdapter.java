@@ -13,8 +13,8 @@ import com.melean.taskstimetracker.record_tasks.view_holders.EmployeeViewHolder;
 import java.util.List;
 
 public class EmployeeAdapter extends BaseRecyclerAdapter<EmployeeModel>{
-    public EmployeeAdapter(Context context, List<EmployeeModel> items, RecyclerView employeesRecycler) {
-        super(context, items, employeesRecycler);
+    public EmployeeAdapter(Context context, List<EmployeeModel> items) {
+        super(context, items);
     }
 
     @Override

@@ -67,13 +67,15 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
         employees.add(new EmployeeModel("Moncho"));
         employees.add(new EmployeeModel("Pencho"));
         employees.add(new EmployeeModel("Gencho"));
-        manageRecycler(mEmployeesRecycler, new EmployeeAdapter(getContext(), employees, mTasksRecycler), mNoEmployees);
+        manageRecycler(mEmployeesRecycler,
+                new EmployeeAdapter(getContext(), employees), mNoEmployees);
 
         List<TaskModel> tasks = new ArrayList<>();
         tasks.add(new TaskModel("Task 1"));
         tasks.add(new TaskModel("Task 2"));
         tasks.add(new TaskModel("Task 3"));
-        manageRecycler(mTasksRecycler, new TasksAdapter(getContext(), tasks, mEmployeesRecycler), mNoTasks);
+        manageRecycler(mTasksRecycler,
+                new TasksAdapter(getContext(), tasks), mNoTasks);
 
         //todo delete me just testing
 
@@ -83,14 +85,16 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
     @Override
     public void showTasksList(List<TaskModel> tasks) {
         if (tasks.size() > 0) {
-            manageRecycler(mTasksRecycler, new TasksAdapter(getContext(), tasks, mTasksRecycler), mNoTasks);
+            manageRecycler(mTasksRecycler,
+                    new TasksAdapter(getContext(), tasks), mNoTasks);
         }
     }
 
     @Override
     public void showEmployeesList(List<EmployeeModel> employees) {
         if (employees.size() > 0) {
-            manageRecycler(mEmployeesRecycler, new EmployeeAdapter(getContext(), employees, mEmployeesRecycler), mNoEmployees);
+            manageRecycler(mEmployeesRecycler,
+                    new EmployeeAdapter(getContext(), employees), mNoEmployees);
         }
     }
 
@@ -107,7 +111,8 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
     @Override
     public TaskEntityModel getTaskModel() {
         long timePassed = SystemClock.elapsedRealtime() - mTimer.getBase(); //todo set base when chronometer starts
-        SimpleDateFormat dateFormat = new SimpleDateFormat(Preferences.ENTITY_DATE_FORMAT, Locale.getDefault());
+        SimpleDateFormat dateFormat =
+                new SimpleDateFormat(Preferences.ENTITY_DATE_FORMAT, Locale.getDefault());
         //todo implement onClickListeners in recyclers
         return new TaskEntityModel(
                 selectedTaskName,
@@ -118,9 +123,20 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
         );
     }
 
-    private void manageRecycler(RecyclerView recyclerView, RecyclerView.Adapter adapter, TextView noItemsView) {
+    @Override
+    public void onStop() {
+        super.onStop();
+        this.setRetainInstance(true);
+    }
+
+    private void manageRecycler(RecyclerView recyclerView,
+                                RecyclerView.Adapter adapter,
+                                TextView noItemsView) {
+
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
+        recyclerView.setLayoutManager(
+                new LinearLayoutManager(getContext().getApplicationContext())
+        );
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         noItemsView.setVisibility(View.GONE);
     }
