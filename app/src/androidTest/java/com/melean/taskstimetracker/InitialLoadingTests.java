@@ -49,8 +49,9 @@ public class InitialLoadingTests {
         mFakeTaskModels = new ArrayList<>();
 
         for (int i = 0; i <3; i++){
-            mFakeTaskModels.add(new TaskModel("Task " + i));
-            mFakeEmployeeModels.add(new EmployeeModel("Employee " + i));
+            int num = i + 1;
+            mFakeTaskModels.add(new TaskModel("Task " + num));
+            mFakeEmployeeModels.add(new EmployeeModel("Employee " + num));
         }
     }
 
@@ -70,24 +71,13 @@ public class InitialLoadingTests {
             }
         });
 
-        onView(withId(R.id.tasks_list)).check(matches(isDisplayed()));
-        onView(withId(R.id.no_tasks)).check(matches((not(isDisplayed()))));
-        onView(withId(R.id.tasks_list))
-                .check(new RecyclerViewItemCountAssertion(mFakeTaskModels.size()));
-        onView(withId(R.id.employees_list))
-                .check(new RecyclerViewItemCountAssertion(mFakeEmployeeModels.size()));
+        checkIfDisplayedAsExpected(R.id.tasks_list, R.id.no_tasks, mFakeTaskModels);
 
-        int taskLastTaskPosition = mFakeTaskModels.size() - 1;
+        checkIfDisplayedAsExpected(R.id.tasks_list, R.id.no_employees, mFakeEmployeeModels);
 
-        onView(withId(R.id.tasks_list))
-                .perform(RecyclerViewActions
-                        .actionOnItemAtPosition(taskLastTaskPosition, click()));
+        checkClicksOnRecyclerViewItems(R.id.tasks_list, mFakeTaskModels);
 
-        int employeeLastItemPosition = mFakeEmployeeModels.size() - 1;
-
-        onView(withId(R.id.employees_list))
-                .perform(RecyclerViewActions
-                        .actionOnItemAtPosition(employeeLastItemPosition, click()));
+        checkClicksOnRecyclerViewItems(R.id.employees_list, mFakeEmployeeModels);
 
         uiThreadTestRule.runOnUiThread(new Runnable() {
             @Override
@@ -100,25 +90,52 @@ public class InitialLoadingTests {
             }
         });
 
-
-
+        
         //check task property
+        int taskLastTaskPosition = mFakeTaskModels.size() - 1; //last clicked element must be 2
+        String expectedTaskName = mCreatedTaskEntity.getTaskName(); //task name must be "Task 3"
         onView(withId(R.id.tasks_list))
             .perform(RecyclerViewActions.scrollToPosition(taskLastTaskPosition))
                 .check(matches(
                         RecyclerMatcher.atPosition(
                                 taskLastTaskPosition,
-                                withText(mCreatedTaskEntity.getTaskName())))
+                                withText(expectedTaskName)))
         );
 
         //check employee property
+        int employeeLastItemPosition = mFakeEmployeeModels.size() - 1; //last clicked element must be 2
+        String expectedEmployeeNameValue = mCreatedTaskEntity.getEmployeeName(); //task name must be "Employee 3"
         onView(withId(R.id.employees_list))
                 .perform(RecyclerViewActions.scrollToPosition(employeeLastItemPosition))
                     .check(matches(
                             RecyclerMatcher.atPosition(
                                     employeeLastItemPosition,
-                                    withText(mCreatedTaskEntity.getEmployeeName())))
+                                    withText(expectedEmployeeNameValue)))
         );
+    }
+
+    private void checkIfDisplayedAsExpected(int recyclerViewId, int noItemsViewId, List mFakeList) {
+        onView(withId(recyclerViewId)).check(matches(isDisplayed()));
+        onView(withId(noItemsViewId)).check(matches((not(isDisplayed()))));
+
+        onView(withId(R.id.tasks_list))
+                .check(new RecyclerViewItemCountAssertion(mFakeList.size()));
+    }
+
+    private void checkClicksOnRecyclerViewItems(int recyclerViewId, List mFakeList) {
+        for (int i=0; i < mFakeList.size(); i++){
+            performClickAtPosition(recyclerViewId, i);
+            if(i == 0){
+                //click again in order to deselect item
+                performClickAtPosition(recyclerViewId, i);
+            }
+        }
+    }
+
+    private void performClickAtPosition(int recyclerViewId, int position) {
+        onView(withId(recyclerViewId))
+                .perform(RecyclerViewActions
+                        .actionOnItemAtPosition(position, click()));
     }
 
     private void setTaskEntity(TaskEntityModel createdTask){

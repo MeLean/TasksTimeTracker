@@ -62,26 +62,6 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
         mPresenter.loadTasks();
         mPresenter.loadEmployees();
 
-        //todo delete this
-        List<TaskModel> tasks = new ArrayList<>();
-        tasks.add(new TaskModel("Task 1"));
-        tasks.add(new TaskModel("Task 2"));
-        tasks.add(new TaskModel("Task 3"));
-
-        manageRecycler(mTasksRecycler,
-                new TasksAdapter(getContext(), tasks), mNoTasks);
-
-        List<EmployeeModel> emps = new ArrayList<>();
-        emps.add(new EmployeeModel("Employee 1"));
-        emps.add(new EmployeeModel("Employee 2"));
-        emps.add(new EmployeeModel("Employee 3"));
-
-        manageRecycler(mEmployeesRecycler,
-                new EmployeeAdapter(getContext(), emps), mNoEmployees);
-        //todo delete this
-
-
-
         return view;
     }
 
@@ -124,8 +104,8 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
                 getSelectedElementString(mEmployeesRecycler);
 
         return new TaskEntityModel(
-                selectedTaskName,
                 selectedEmployeeName,
+                selectedTaskName,
                 timePassed,
                 isTaskInterrupted,
                 dateFormat.format(System.currentTimeMillis())
@@ -144,20 +124,13 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
             id = R.id.employee_name;
         }
 
-        boolean check_b1 = adapter instanceof TasksAdapter;
-        boolean check_b2 = adapter instanceof EmployeeAdapter;
-
-        int check1 = id = R.id.task_name;
-        int check2 = R.id.employee_name;
-
-
         TextView name = (TextView) view.findViewById(id);
+        String result = null;
         if(name != null){
-            return name.getText().toString();
+            result = name.getText().toString();
         }
 
-        return null;
-
+        return result;
     }
 
     @Override
