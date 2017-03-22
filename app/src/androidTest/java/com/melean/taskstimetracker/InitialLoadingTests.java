@@ -9,7 +9,7 @@ import android.support.v4.app.FragmentManager;
 
 import com.melean.taskstimetracker.data.models.EmployeeModel;
 import com.melean.taskstimetracker.data.models.TaskEntityModel;
-import com.melean.taskstimetracker.recycler_view_utils.RecyclerMatcher;
+import com.melean.taskstimetracker.recycler_view_utils.RecyclerViewMatcher;
 import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.record_tasks.RecordTaskActivity;
 import com.melean.taskstimetracker.record_tasks.RecordTaskFragment;
@@ -26,6 +26,7 @@ import java.util.List;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -95,23 +96,17 @@ public class InitialLoadingTests {
         int taskLastTaskPosition = mFakeTaskModels.size() - 1; //last clicked element must be 2
         String expectedTaskName = mCreatedTaskEntity.getTaskName(); //task name must be "Task 3"
         onView(withId(R.id.tasks_list))
-            .perform(RecyclerViewActions.scrollToPosition(taskLastTaskPosition))
-                .check(matches(
-                        RecyclerMatcher.atPosition(
-                                taskLastTaskPosition,
-                                withText(expectedTaskName)))
-        );
+            .perform(RecyclerViewActions.scrollToPosition(taskLastTaskPosition));
+        onView(withRecyclerView(R.id.tasks_list).atPosition(taskLastTaskPosition))
+                .check(matches(hasDescendant(withText(expectedTaskName))));
 
         //check employee property
         int employeeLastItemPosition = mFakeEmployeeModels.size() - 1; //last clicked element must be 2
         String expectedEmployeeNameValue = mCreatedTaskEntity.getEmployeeName(); //task name must be "Employee 3"
         onView(withId(R.id.employees_list))
-                .perform(RecyclerViewActions.scrollToPosition(employeeLastItemPosition))
-                    .check(matches(
-                            RecyclerMatcher.atPosition(
-                                    employeeLastItemPosition,
-                                    withText(expectedEmployeeNameValue)))
-        );
+                .perform(RecyclerViewActions.scrollToPosition(employeeLastItemPosition));
+        onView(withRecyclerView(R.id.employees_list).atPosition(employeeLastItemPosition))
+                .check(matches(hasDescendant(withText(expectedEmployeeNameValue))));
     }
 
     private void checkIfDisplayedAsExpected(int recyclerViewId, int noItemsViewId, List mFakeList) {
@@ -123,7 +118,7 @@ public class InitialLoadingTests {
     }
 
     private void checkClicksOnRecyclerViewItems(int recyclerViewId, List mFakeList) {
-        for (int i=0; i < mFakeList.size(); i++){
+        for (int i = 0; i < mFakeList.size(); i++){
             performClickAtPosition(recyclerViewId, i);
             if(i == 0){
                 //click again in order to deselect item
@@ -141,4 +136,10 @@ public class InitialLoadingTests {
     private void setTaskEntity(TaskEntityModel createdTask){
         mCreatedTaskEntity = createdTask;
     }
+
+    public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
+        return new RecyclerViewMatcher(recyclerViewId);
+    }
 }
+
+
