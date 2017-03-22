@@ -1,4 +1,4 @@
-package com.melean.taskstimetracker.recycler_view_utils;
+package com.melean.taskstimetracker.recycler_view_assertion_utils;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

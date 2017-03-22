@@ -1,6 +1,7 @@
 package com.melean.taskstimetracker;
 
 import android.support.test.espresso.contrib.RecyclerViewActions;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.rule.UiThreadTestRule;
@@ -9,11 +10,11 @@ import android.support.v4.app.FragmentManager;
 
 import com.melean.taskstimetracker.data.models.EmployeeModel;
 import com.melean.taskstimetracker.data.models.TaskEntityModel;
-import com.melean.taskstimetracker.recycler_view_utils.RecyclerViewMatcher;
+import com.melean.taskstimetracker.recycler_view_assertion_utils.RecyclerViewMatcher;
 import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.record_tasks.RecordTaskActivity;
 import com.melean.taskstimetracker.record_tasks.RecordTaskFragment;
-import com.melean.taskstimetracker.recycler_view_utils.RecyclerViewItemCountAssertion;
+import com.melean.taskstimetracker.recycler_view_assertion_utils.RecyclerViewItemCountAssertion;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -33,7 +34,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.core.IsNot.not;
 
 @RunWith(AndroidJUnit4.class)
-public class InitialLoadingTests {
+public class RecyclerViewLoadingAndActionTests {
     private List<EmployeeModel> mFakeEmployeeModels;
     private List<TaskModel> mFakeTaskModels;
     private TaskEntityModel mCreatedTaskEntity;
@@ -59,6 +60,7 @@ public class InitialLoadingTests {
     @Test
     @LargeTest
     public void CheckStartingViews_WhenHasSomeTasks() throws Throwable {
+
         uiThreadTestRule.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -120,11 +122,34 @@ public class InitialLoadingTests {
     private void checkClicksOnRecyclerViewItems(int recyclerViewId, List mFakeList) {
         for (int i = 0; i < mFakeList.size(); i++){
             performClickAtPosition(recyclerViewId, i);
+            assertViewAtPositionIsSelected(recyclerViewId, i);
             if(i == 0){
                 //click again in order to deselect item
                 performClickAtPosition(recyclerViewId, i);
+                assertViewAtPositionIsNotSelected(recyclerViewId, i);
             }
         }
+
+        for (int j = 0; j < mFakeList.size(); j++){
+            if (j != mFakeList.size() - 1){
+                // if is not last element
+                assertViewAtPositionIsNotSelected(recyclerViewId, j);
+            } else {
+                assertViewAtPositionIsSelected(recyclerViewId, j);
+            }
+        }
+    }
+
+    private void assertViewAtPositionIsSelected(int recyclerViewId, int position) {
+        onView(withRecyclerView(recyclerViewId).atPosition(position))
+                .check(matches(ViewMatchers.isSelected()));
+
+    }
+
+    private void assertViewAtPositionIsNotSelected(int recyclerViewId, int position) {
+        onView(withRecyclerView(recyclerViewId).atPosition(position))
+                .check(matches(not(ViewMatchers.isSelected())));
+
     }
 
     private void performClickAtPosition(int recyclerViewId, int position) {
@@ -137,9 +162,12 @@ public class InitialLoadingTests {
         mCreatedTaskEntity = createdTask;
     }
 
+    //RecyclerViewMatcher helper
     public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
         return new RecyclerViewMatcher(recyclerViewId);
     }
+
+
 }
 
 
