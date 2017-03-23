@@ -7,8 +7,6 @@ import android.support.test.runner.AndroidJUnit4;
 import com.melean.taskstimetracker.data.models.EmployeeModel;
 import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.record_tasks.RecordTaskActivity;
-import com.melean.taskstimetracker.record_tasks.adapters.EmployeeAdapter;
-import com.melean.taskstimetracker.record_tasks.adapters.TasksAdapter;
 
 import org.junit.Before;
 import org.junit.Rule;

@@ -1,10 +1,9 @@
-package com.melean.taskstimetracker.record_tasks.view_holders;
+package com.melean.taskstimetracker.ui.view_holders;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.melean.taskstimetracker.R;
-import com.melean.taskstimetracker.record_tasks.adapters.BaseRecyclerAdapter;
+import com.melean.taskstimetracker.ui.adapters.BaseRecyclerAdapter;
 
 public abstract class BaseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private BaseRecyclerAdapter.OnRecyclerItemClicked mOnRecyclerItemClicked;

@@ -1,4 +1,4 @@
-package com.melean.taskstimetracker.record_tasks.adapters;
+package com.melean.taskstimetracker.ui.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.melean.taskstimetracker.R;
 import com.melean.taskstimetracker.data.models.EmployeeModel;
-import com.melean.taskstimetracker.record_tasks.view_holders.EmployeeViewHolder;
+import com.melean.taskstimetracker.ui.view_holders.EmployeeViewHolder;
 
 import java.util.List;
 

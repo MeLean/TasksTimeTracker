@@ -2,6 +2,7 @@ package com.melean.taskstimetracker.record_tasks;
 
 
 import android.os.SystemClock;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -21,12 +22,11 @@ import com.melean.taskstimetracker.data.models.TaskEntityModel;
 import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.data.repositories.ITaskRepository;
 import com.melean.taskstimetracker.data.repositories.TaskRepositoryImplementation;
-import com.melean.taskstimetracker.record_tasks.adapters.BaseRecyclerAdapter;
-import com.melean.taskstimetracker.record_tasks.adapters.EmployeeAdapter;
-import com.melean.taskstimetracker.record_tasks.adapters.TasksAdapter;
+import com.melean.taskstimetracker.ui.adapters.BaseRecyclerAdapter;
+import com.melean.taskstimetracker.ui.adapters.EmployeeAdapter;
+import com.melean.taskstimetracker.ui.adapters.TasksAdapter;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -36,7 +36,8 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
     private Chronometer mTimer;
     private RecyclerView mTasksRecycler, mEmployeesRecycler;
     private TextView mNoTasks, mNoEmployees;
-    boolean isTaskInterrupted = false;
+    private long mSecondsWorked = 0;
+    private boolean isTaskInterrupted = false;
 
     public RecordTaskFragment() {
         // Required empty public constructor
@@ -93,7 +94,6 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
 
     @Override
     public TaskEntityModel getTaskModel() {
-        long timePassed = SystemClock.elapsedRealtime() - mTimer.getBase(); //todo set base when chronometer starts
         SimpleDateFormat dateFormat =
                 new SimpleDateFormat(Preferences.ENTITY_DATE_FORMAT, Locale.getDefault());
 
@@ -106,7 +106,7 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
         return new TaskEntityModel(
                 selectedEmployeeName,
                 selectedTaskName,
-                timePassed,
+                mSecondsWorked,
                 isTaskInterrupted,
                 dateFormat.format(System.currentTimeMillis())
         );
@@ -149,5 +149,34 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
         );
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         noItemsView.setVisibility(View.GONE);
+    }
+
+    void toggleRecording(FloatingActionButton pauseBtn, FloatingActionButton fabRecord, boolean isInterrupted) {
+        String fabRecordContentDescription = fabRecord.getContentDescription().toString();
+
+
+        if (getString(R.string.start).equals(fabRecordContentDescription)) {
+            startTimer(mTimer);
+            pauseBtn.setVisibility(View.VISIBLE);
+            fabRecord.setImageResource(android.R.drawable.ic_menu_save);
+            fabRecord.setContentDescription(getString(R.string.save));
+        } else {
+            stopTimer(mTimer);
+            pauseBtn.setVisibility(View.GONE);
+            fabRecord.setImageResource(android.R.drawable.ic_media_play);
+            fabRecord.setContentDescription(getString(R.string.start));
+            isTaskInterrupted = isInterrupted;
+        }
+    }
+
+    private void startTimer(Chronometer timer) {
+        timer.setBase(SystemClock.elapsedRealtime());
+        timer.start();
+    }
+
+    private void stopTimer(Chronometer timer) {
+        timer.stop();
+        // convert in second from milliseconds
+        mSecondsWorked = (SystemClock.elapsedRealtime() - timer.getBase()) / 1000;
     }
 }

@@ -1,4 +1,4 @@
-package com.melean.taskstimetracker.record_tasks.adapters;
+package com.melean.taskstimetracker.ui.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

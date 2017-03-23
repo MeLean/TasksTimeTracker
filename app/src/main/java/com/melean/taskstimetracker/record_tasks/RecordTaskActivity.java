@@ -48,27 +48,13 @@ public class RecordTaskActivity extends AppCompatActivity implements View.OnClic
         FloatingActionButton pauseBtn = (FloatingActionButton) findViewById(R.id.fab_pause);
         FloatingActionButton recordBtn = (FloatingActionButton) findViewById(R.id.fab_record);
         if (id == R.id.fab_record) {
-            toggleRecording(pauseBtn, recordBtn, false);
+            mFragment.toggleRecording(pauseBtn, recordBtn, false);
         }else if(id == R.id.fab_pause){
-            toggleRecording(pauseBtn, recordBtn, true);
+            mFragment.toggleRecording(pauseBtn, recordBtn, true);
         }
     }
 
-    private void toggleRecording(FloatingActionButton pauseBtn, FloatingActionButton fabRecord, boolean isInterupted) {
-        String fabRecordContentDescription = fabRecord.getContentDescription().toString();
-
-        if (getString(R.string.start).equals(fabRecordContentDescription)) {
-            pauseBtn.setVisibility(View.VISIBLE);
-            fabRecord.setImageResource(android.R.drawable.ic_menu_save);
-            fabRecord.setContentDescription(getString(R.string.save));
-        } else {
-            pauseBtn.setVisibility(View.GONE);
-            fabRecord.setImageResource(android.R.drawable.ic_media_play);
-            fabRecord.setContentDescription(getString(R.string.start));
-            mFragment.isTaskInterrupted = isInterupted;
-        }
-    }
-
+    //todo manage saved instance
     public void initFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         mFragment = (RecordTaskFragment) fragmentManager.findFragmentByTag(RecordTaskFragment.TAG);

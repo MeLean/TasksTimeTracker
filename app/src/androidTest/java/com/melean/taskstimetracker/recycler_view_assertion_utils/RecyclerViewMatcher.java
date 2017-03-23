@@ -20,7 +20,7 @@ public class RecyclerViewMatcher {
         return atPositionOnView(position, -1);
     }
 
-    public Matcher<View> atPositionOnView(final int position, final int targetViewId) {
+    public  Matcher<View> atPositionOnView(final int position, final int targetViewId) {
 
         return new TypeSafeMatcher<View>() {
             Resources resources = null;
