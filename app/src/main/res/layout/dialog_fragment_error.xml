@@ -1,0 +1,29 @@
+<RelativeLayout
+    android:id="@+id/noting_selected_error"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.dialogs.ErrorDialogFragment">
+
+    <TextView
+        android:id="@+id/tw_error_dialog_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="22sp"
+        />
+
+    <Button
+        android:id="@+id/btn_error_dialog_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/tw_error_dialog_message"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/ok"
+        />
+</RelativeLayout>

@@ -13,6 +13,7 @@ import com.melean.taskstimetracker.recycler_view_assertion_utils.TestUtils;
 import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.record_tasks.RecordTaskActivity;
 import com.melean.taskstimetracker.record_tasks.RecordTaskFragment;
+import com.melean.taskstimetracker.recycler_view_assertion_utils.TestsFaker;
 
 import junit.framework.AssertionFailedError;
 
@@ -44,49 +45,35 @@ public class RecyclerViewClickedAndTaskCreatedTest {
     public void setUp() {
         mFakeTaskModels = new ArrayList<>();
         mFakeEmployeeModels = new ArrayList<>();
-        fillUpWithFakeData(mFakeTaskModels, mFakeEmployeeModels, 12);
+        TestsFaker.fillUpWithFakeData(mFakeTaskModels, mFakeEmployeeModels, 12);
     }
 
     @Test
     @LargeTest
     public void CreateAndSaveTaskEntity() throws Throwable {
         final RecordTaskActivity  activity = mActivityRule.getActivity();
-        TestUtils.StartUiThreadToUnlockAndWakeUpDevice(activity);
+        TestUtils.UnlockAndWakeUpDeviceOnUi(activity);
 
-        this.launchRecordFragmentFromUi(activity);
+        TestsFaker.launchRecordFragmentFromUi(activity, mFakeTaskModels, mFakeEmployeeModels);
 
         this.checkIfDisplayedAsExpected(R.id.tasks_list, R.id.no_tasks, mFakeTaskModels);
 
         this.checkIfDisplayedAsExpected(R.id.employees_list, R.id.no_employees, mFakeEmployeeModels);
 
-        TestUtils.performClicksOnRecyclerViewItemAssertSingleSelection(R.id.tasks_list, mFakeTaskModels);
+        TestUtils.assertSingleSelection(R.id.tasks_list, mFakeTaskModels);
 
-        TestUtils.performClicksOnRecyclerViewItemAssertSingleSelection(R.id.employees_list, mFakeEmployeeModels);
+        TestUtils.assertSingleSelection(R.id.employees_list, mFakeEmployeeModels);
 
         TestUtils.performClickOnViewWithId(R.id.fab_record);
 
         final long fakeWorkingMilliseconds = 2000L;
-        TestUtils.startUiThreadToSimulateWorkingProcess(fakeWorkingMilliseconds);
+        TestUtils.sSimulateWorkingProcessOnUi(fakeWorkingMilliseconds);
 
         TestUtils.performClickOnViewWithId(R.id.fab_record);
 
         this.startUiThreadToGetTaskEntity();
 
         this.checkCreatedTaskEntity(fakeWorkingMilliseconds);
-    }
-
-    public void launchRecordFragmentFromUi(final RecordTaskActivity activity) throws Throwable {
-        uiThreadTestRule.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                activity.initFragment();
-                FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                RecordTaskFragment fragment =
-                        (RecordTaskFragment) fragmentManager.findFragmentByTag(RecordTaskFragment.TAG);
-                fragment.showTasksList(mFakeTaskModels);
-                fragment.showEmployeesList(mFakeEmployeeModels);
-            }
-        });
     }
 
     private void startUiThreadToGetTaskEntity() throws Throwable {
@@ -107,13 +94,13 @@ public class RecyclerViewClickedAndTaskCreatedTest {
     }
 
     private void checkCreatedTaskEntity(long fakeWorkingMilliseconds) {
-        TestUtils.checkRecyclerViewItemHasViewWithText(
+        TestUtils.assertItemHasViewWithText(
                 R.id.tasks_list,
                 mFakeTaskModels.size() - 1,
                 mCreatedTaskEntity.getTaskName()
         );
 
-        TestUtils.checkRecyclerViewItemHasViewWithText(
+        TestUtils.assertItemHasViewWithText(
                 R.id.employees_list,
                 mFakeEmployeeModels.size() - 1,
                 mCreatedTaskEntity.getEmployeeName()
@@ -149,17 +136,6 @@ public class RecyclerViewClickedAndTaskCreatedTest {
         onView(withId(recyclerViewId))
                 .check(new RecyclerViewItemCountAssertion(mFakeList.size()));
     }
-
-    public static void fillUpWithFakeData(
-            List<TaskModel> fakeTaskModels, List<EmployeeModel> fakeEmployeeModels, int testingRecyclerViewItemsCount) {
-
-        for (int i = 0; i < testingRecyclerViewItemsCount; i++) {
-            int num = i + 1;
-            fakeTaskModels.add(new TaskModel("Task " + num));
-            fakeEmployeeModels.add(new EmployeeModel("Employee " + num));
-        }
-    }
-
 }
 
 

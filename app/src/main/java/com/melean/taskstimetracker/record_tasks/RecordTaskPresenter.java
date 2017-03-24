@@ -44,7 +44,7 @@ public class RecordTaskPresenter implements RecordTaskContract.UserActionsListen
             recordTaskView.toggleTimeCounter(true);
             isRecording = true;
         } else {
-            recordTaskView.showErrorRecordIntend(true);
+            recordTaskView.showErrorRecordIntend(Error.NOT_PERMITTED_WHILE_RECORDING);
         }
 
     }
@@ -56,7 +56,7 @@ public class RecordTaskPresenter implements RecordTaskContract.UserActionsListen
             isRecording = false;
             taskRepository.saveTaskEntity(recordTaskView.getTaskModel());
         } else {
-            recordTaskView.showErrorRecordIntend(false);
+            recordTaskView.showErrorRecordIntend(Error.PERMITTED_ONLY_WHILE_RECORDING);
         }
     }
 }

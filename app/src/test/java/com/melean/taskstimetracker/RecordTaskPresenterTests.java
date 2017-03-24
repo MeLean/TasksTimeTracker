@@ -3,6 +3,7 @@ package com.melean.taskstimetracker;
 import com.melean.taskstimetracker.data.models.TaskEntityModel;
 import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.data.repositories.ITaskRepository;
+import com.melean.taskstimetracker.record_tasks.Error;
 import com.melean.taskstimetracker.record_tasks.RecordTaskContract;
 import com.melean.taskstimetracker.record_tasks.RecordTaskPresenter;
 
@@ -56,7 +57,7 @@ public class RecordTaskPresenterTests {
     public void onClickStartRecord_ShouldShowError() {
         mRecordTaskPresenter.isRecording = true;
         mRecordTaskPresenter.startRecording();
-        verify(mRecordTasksView).showErrorRecordIntend(true);
+        verify(mRecordTasksView).showErrorRecordIntend(Error.NOT_PERMITTED_WHILE_RECORDING);
     }
 
     @Test
@@ -74,7 +75,7 @@ public class RecordTaskPresenterTests {
     public void onClickStopRecord_ShouldShowError() {
         mRecordTaskPresenter.isRecording = false;
         mRecordTaskPresenter.stopRecording();
-        verify(mRecordTasksView).showErrorRecordIntend(false);
+        verify(mRecordTasksView).showErrorRecordIntend(Error.PERMITTED_ONLY_WHILE_RECORDING);
     }
 
     @Test

@@ -16,6 +16,10 @@
     <string name="add_employee">Add Employee</string>
     <string name="add_task">Add Task</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ok">OK</string>
+    <string name="error_not_full_selection">Employee and Task must be selected!</string>
+    <string name="error_not_permitted_until_recording">Action is not permitted while recording!</string>
+    <string name="error_permitted_only_while_recording">Action is permitted only while recording!</string>
+    <string name="error_unknown">Unknown error occurred!</string>
+
 </resources>

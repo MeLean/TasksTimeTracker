@@ -3,6 +3,7 @@ package com.melean.taskstimetracker.record_tasks;
 
 import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -25,6 +26,7 @@ import com.melean.taskstimetracker.data.repositories.TaskRepositoryImplementatio
 import com.melean.taskstimetracker.ui.adapters.BaseRecyclerAdapter;
 import com.melean.taskstimetracker.ui.adapters.EmployeeAdapter;
 import com.melean.taskstimetracker.ui.adapters.TasksAdapter;
+import com.melean.taskstimetracker.ui.dialogs.ErrorDialogFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -35,6 +37,7 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
     private RecordTaskPresenter mPresenter;
     private Chronometer mTimer;
     private RecyclerView mTasksRecycler, mEmployeesRecycler;
+    private BaseRecyclerAdapter mTaskAdapter, mEmployeeAdapter;
     private TextView mNoTasks, mNoEmployees;
     private long mSecondsWorked = 0;
     private boolean isTaskInterrupted = false;
@@ -55,7 +58,7 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
         ITaskRepository repository =
                 new TaskRepositoryImplementation(new RealmDatabase(getContext()));
         mPresenter = new RecordTaskPresenter(this, repository);
-        mTimer = (Chronometer)view.findViewById(R.id.timer);
+        mTimer = (Chronometer) view.findViewById(R.id.timer);
         mTasksRecycler = (RecyclerView) view.findViewById(R.id.tasks_list);
         mEmployeesRecycler = (RecyclerView) view.findViewById(R.id.employees_list);
         mNoTasks = (TextView) view.findViewById(R.id.no_tasks);
@@ -69,22 +72,39 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
     @Override
     public void showTasksList(List<TaskModel> tasks) {
         if (tasks.size() > 0) {
-            manageRecycler(mTasksRecycler,
-                    new TasksAdapter(getContext(), tasks), mNoTasks);
+            mTaskAdapter = new TasksAdapter(getContext(), tasks);
+            manageRecycler(mTasksRecycler, mTaskAdapter, mNoTasks);
         }
     }
 
     @Override
     public void showEmployeesList(List<EmployeeModel> employees) {
         if (employees.size() > 0) {
-            manageRecycler(mEmployeesRecycler,
-                    new EmployeeAdapter(getContext(), employees), mNoEmployees);
+            mEmployeeAdapter = new EmployeeAdapter(getContext(), employees);
+            manageRecycler(mEmployeesRecycler, mEmployeeAdapter, mNoEmployees);
         }
     }
 
     @Override
-    public void showErrorRecordIntend(boolean isRecording) {
+    public void showErrorRecordIntend(Error error) {
+        String message;
+        switch (error) {
+            case NOT_FULL_SELECTION:
+                message = getString(R.string.error_not_full_selection);
+                break;
+            case NOT_PERMITTED_WHILE_RECORDING:
+                message = getString(R.string.error_not_permitted_until_recording);
+                break;
+            case PERMITTED_ONLY_WHILE_RECORDING:
+                message = getString(R.string.error_permitted_only_while_recording);
+                break;
+            default:
+                message = getString(R.string.error_unknown);
 
+        }
+
+        DialogFragment dialog = ErrorDialogFragment.newInstance(message);
+        dialog.show(getActivity().getSupportFragmentManager(), ErrorDialogFragment.TAG);
     }
 
     @Override
@@ -116,17 +136,17 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
             RecyclerView recyclerView) {
 
         BaseRecyclerAdapter adapter = (BaseRecyclerAdapter) recyclerView.getAdapter();
-        View view =  adapter.getLastSelectedView();
+        View view = adapter.getLastSelectedView();
         int id = -1;
-        if (adapter instanceof TasksAdapter){
-           id = R.id.task_name;
-        }else if(adapter instanceof EmployeeAdapter){
+        if (adapter instanceof TasksAdapter) {
+            id = R.id.task_name;
+        } else if (adapter instanceof EmployeeAdapter) {
             id = R.id.employee_name;
         }
 
         TextView name = (TextView) view.findViewById(id);
         String result = null;
-        if(name != null){
+        if (name != null) {
             result = name.getText().toString();
         }
 
@@ -178,5 +198,19 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
         timer.stop();
         // convert in second from milliseconds
         mSecondsWorked = (SystemClock.elapsedRealtime() - timer.getBase()) / 1000;
+    }
+
+    View getSelectedTask() {
+        if (mTaskAdapter != null) {
+            return mTaskAdapter.getLastSelectedView();
+        }
+        return null;
+    }
+
+    View getSelectedEmployee() {
+        if (mEmployeeAdapter != null) {
+            return mEmployeeAdapter.getLastSelectedView();
+        }
+        return null;
     }
 }

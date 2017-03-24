@@ -12,7 +12,7 @@ public interface RecordTaskContract {
 
         void showEmployeesList(List<EmployeeModel> employeesNames);
 
-        void showErrorRecordIntend(boolean isRecording);
+        void showErrorRecordIntend(Error error);
 
         void toggleTimeCounter(boolean isStarted);
 

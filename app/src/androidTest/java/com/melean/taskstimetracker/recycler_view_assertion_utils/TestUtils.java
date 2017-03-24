@@ -19,8 +19,17 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 
 public class TestUtils {
+    //RecyclerViewMatcher provider
+    public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
+        return new RecyclerViewMatcher(recyclerViewId);
+    }
 
-    public static void StartUiThreadToUnlockAndWakeUpDevice(final Activity activity) throws Throwable {
+    //UiThreadTestRule provider
+    public static UiThreadTestRule getUiThreadRule() {
+        return new UiThreadTestRule();
+    }
+
+    public static void UnlockAndWakeUpDeviceOnUi(final Activity activity) throws Throwable {
         getUiThreadRule().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -34,8 +43,33 @@ public class TestUtils {
         });
     }
 
+    public static void sSimulateWorkingProcessOnUi(final long fakeWorkingMilliseconds) throws Throwable {
+        getUiThreadRule().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(fakeWorkingMilliseconds);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     public static void performClickOnViewWithId(int id){
         onView(withId(id)).perform(click());
+    }
+
+    public static void performClickOnViewWithText(String text){
+        onView(withText(text)).perform(click());
+    }
+
+    public static void performClickAtPosition(int recyclerViewId, int position) {
+        onView(withId(recyclerViewId))
+                .perform(RecyclerViewActions.scrollToPosition(position));
+        onView(withId(recyclerViewId))
+                .perform(RecyclerViewActions
+                        .actionOnItemAtPosition(position, click()));
     }
 
     public static void assertIsViewDisplayed(int id, boolean shouldBeDisplayed){
@@ -47,14 +81,14 @@ public class TestUtils {
         onView(withId(id)).check(displayedAssertion);
     }
 
-    public static void checkRecyclerViewItemHasViewWithText(int recyclerViewId, int latClickedPosition, String expectedText) {
+    public static void assertItemHasViewWithText(int recyclerViewId, int latClickedPosition, String expectedText) {
         onView(withId(recyclerViewId))
                 .perform(RecyclerViewActions.scrollToPosition(latClickedPosition));
         onView(withRecyclerView(recyclerViewId).atPosition(latClickedPosition))
                 .check(matches(hasDescendant(withText(expectedText))));
     }
 
-    public static void assertViewAtPositionIsSelected(int recyclerViewId, int position, boolean shouldBeSelected) {
+    public static void assertPositionIsSelected(int recyclerViewId, int position, boolean shouldBeSelected) {
         onView(withId(recyclerViewId))
                 .perform(RecyclerViewActions.scrollToPosition(position));
         ViewAssertion assertion = matches(not(ViewMatchers.isSelected()));
@@ -68,35 +102,18 @@ public class TestUtils {
 
     }
 
-    public static void performClickAtPosition(int recyclerViewId, int position) {
-        onView(withId(recyclerViewId))
-                .perform(RecyclerViewActions.scrollToPosition(position));
-        onView(withId(recyclerViewId))
-                .perform(RecyclerViewActions
-                        .actionOnItemAtPosition(position, click()));
+    public static void assertThatViewHasDescendantWithText(int viewId, String expectedText) {
+        onView(withId(viewId)).check(matches(hasDescendant(withText(expectedText))));
     }
 
-    public static void startUiThreadToSimulateWorkingProcess(final long fakeWorkingMilliseconds) throws Throwable {
-        getUiThreadRule().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(fakeWorkingMilliseconds);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public static void performClicksOnRecyclerViewItemAssertSingleSelection(int recyclerViewId, List mFakeList) {
+    public static void assertSingleSelection(int recyclerViewId, List mFakeList) {
         for (int i = 0; i < mFakeList.size(); i++) {
             TestUtils.performClickAtPosition(recyclerViewId, i);
-            TestUtils.assertViewAtPositionIsSelected(recyclerViewId, i, true);
+            TestUtils.assertPositionIsSelected(recyclerViewId, i, true);
             if (i == 0) {
                 //click again in order to deselect item
                 TestUtils.performClickAtPosition(recyclerViewId, i);
-                TestUtils.assertViewAtPositionIsSelected(recyclerViewId, i, false);
+                TestUtils.assertPositionIsSelected(recyclerViewId, i, false);
             }
         }
 
@@ -106,17 +123,8 @@ public class TestUtils {
                 isSelected = true;
             }
 
-            TestUtils.assertViewAtPositionIsSelected(recyclerViewId, j, isSelected);
+            TestUtils.assertPositionIsSelected(recyclerViewId, j, isSelected);
         }
     }
 
-    //RecyclerViewMatcher provider
-    public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
-        return new RecyclerViewMatcher(recyclerViewId);
-    }
-
-    //UiThreadTestRule provider
-    public static UiThreadTestRule getUiThreadRule() {
-        return new UiThreadTestRule();
-    }
 }
