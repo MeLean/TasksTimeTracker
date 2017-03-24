@@ -58,6 +58,7 @@ public class TaskRepositoryTests {
         mTestEntityModelsList = new ArrayList<>();
         mTestRealmEntitiesList = new ArrayList<>();
         mTestTasksRealmList = new ArrayList<>();
+
         for (int i = 0; i <= 3; i++){
             TaskEntityModel model = new TaskEntityModel(EMPLOYEE_NAME + " - "+ i, i, TASK_NAME + " - "+ i, WORKED_TIME, false, currentDate);
             mTestEntityModelsList.add(model);

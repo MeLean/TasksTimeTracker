@@ -4,8 +4,10 @@ import android.support.annotation.NonNull;
 
 import com.melean.taskstimetracker.constants.Preferences;
 import com.melean.taskstimetracker.data.database.RealmDatabase.RealmDatabase;
+import com.melean.taskstimetracker.data.database.RealmObjects.EmployeeRealmObject;
 import com.melean.taskstimetracker.data.database.RealmObjects.TaskEntityRealmObject;
 import com.melean.taskstimetracker.data.database.RealmObjects.TaskRealmObject;
+import com.melean.taskstimetracker.data.models.EmployeeModel;
 import com.melean.taskstimetracker.data.models.TaskEntityModel;
 import com.melean.taskstimetracker.data.models.TaskModel;
 
@@ -65,7 +67,9 @@ public class TaskRepositoryImplementation implements ITaskRepository{
 
     @Override
     public void getEmployees(@NonNull LoadEmployeesCallback callback) {
-
+        callback.onEmployeesLoaded(
+                makeEmployeeList(mRealmDatabase.copyAll(EmployeeRealmObject.class))
+        );
     }
 
     @Override
@@ -86,6 +90,15 @@ public class TaskRepositoryImplementation implements ITaskRepository{
         List<TaskEntityModel> resultList = new ArrayList<>();
         for (TaskEntityRealmObject element : realmObjects) {
             resultList.add(TaskEntityModel.makeFrom(element));
+        }
+
+        return resultList;
+    }
+
+    private List<EmployeeModel> makeEmployeeList(List<EmployeeRealmObject> employeeRealmObjects) {
+        List<EmployeeModel> resultList = new ArrayList<>();
+        for (EmployeeRealmObject element : employeeRealmObjects) {
+            resultList.add(new EmployeeModel(element.getEmployeeName()));
         }
 
         return resultList;

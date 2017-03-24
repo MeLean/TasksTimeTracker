@@ -1,5 +1,6 @@
 package com.melean.taskstimetracker;
 
+import com.melean.taskstimetracker.data.models.EmployeeModel;
 import com.melean.taskstimetracker.data.models.TaskEntityModel;
 import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.data.repositories.ITaskRepository;
@@ -30,7 +31,7 @@ public class RecordTaskPresenterTests {
     ArgumentCaptor<List<TaskModel>> tasksModelCaptor;
 
     @Captor
-    ArgumentCaptor<List<TaskModel>> tasksModelCaptor2;
+    ArgumentCaptor<List<EmployeeModel>> employeeModelCaptor;
 
     private RecordTaskPresenter mRecordTaskPresenter;
 
@@ -79,14 +80,23 @@ public class RecordTaskPresenterTests {
     }
 
     @Test
-    public void onDisplayTasks_ShouldShowError() {
+    public void onDisplayTasksEmployees_ShouldShowError() {
         mRecordTaskPresenter.isRecording = false;
         mRecordTaskPresenter.loadTasks();
+        mRecordTaskPresenter.loadEmployees();
 
         ArgumentCaptor<ITaskRepository.LoadTasksCallback> taskCallbackArgument = ArgumentCaptor.forClass(
                 ITaskRepository.LoadTasksCallback.class);
+
+        ArgumentCaptor<ITaskRepository.LoadEmployeesCallback> employeeCallbackArgument = ArgumentCaptor.forClass(
+                ITaskRepository.LoadEmployeesCallback.class);
+
         verify(mRecordTaskRepository).getTasks(taskCallbackArgument.capture());
         taskCallbackArgument.getValue().onTasksLoaded(tasksModelCaptor.capture());
         verify(mRecordTasksView).showTasksList(tasksModelCaptor.capture());
+
+        verify(mRecordTaskRepository).getEmployees(employeeCallbackArgument.capture());
+        employeeCallbackArgument.getValue().onEmployeesLoaded(employeeModelCaptor.capture());
+        verify(mRecordTasksView).showEmployeesList(employeeModelCaptor.capture());
     }
 }
