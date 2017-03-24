@@ -101,7 +101,6 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
                 break;
             default:
                 message = getString(R.string.error_unknown);
-
         }
 
         DialogFragment dialog = ErrorDialogFragment.newInstance(message);
@@ -119,7 +118,6 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
             pauseBtn.setVisibility(View.VISIBLE);
             fabRecord.setImageResource(android.R.drawable.ic_menu_save);
             fabRecord.setContentDescription(getString(R.string.save));
-
         } else {
             stopTimer(mTimer);
             pauseBtn.setVisibility(View.GONE);
