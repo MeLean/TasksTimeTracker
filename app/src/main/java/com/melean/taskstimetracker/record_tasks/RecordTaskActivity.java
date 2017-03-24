@@ -1,7 +1,6 @@
 package com.melean.taskstimetracker.record_tasks;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -44,21 +43,23 @@ public class RecordTaskActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        FloatingActionButton pauseBtn = (FloatingActionButton) findViewById(R.id.fab_pause);
-        FloatingActionButton recordBtn = (FloatingActionButton) findViewById(R.id.fab_record);
+        RecordTaskPresenter presenter = mFragment.getPresenter();
         if (id == R.id.fab_record) {
-            if(ifItemsSelected()){
-                mFragment.toggleRecording(pauseBtn, recordBtn, false);
-            } else {
-                mFragment.showErrorRecordIntend(Error.NOT_FULL_SELECTION);
+            if(presenter.isRecording){
+                presenter.stopRecording(false);
+            }else{
+                if (isItemsSelected()){
+                    presenter.startRecording();
+                }else{
+                    mFragment.showErrorRecordIntend(RecordingError.NOT_FULL_SELECTION);
+                }
             }
-
         }else if(id == R.id.fab_pause){
-            mFragment.toggleRecording(pauseBtn, recordBtn, true);
+            presenter.stopRecording(true);
         }
     }
 
-    private boolean ifItemsSelected() {
+    private boolean isItemsSelected() {
         return null != mFragment.getSelectedTask()  &&
             null != mFragment.getSelectedEmployee();
     }

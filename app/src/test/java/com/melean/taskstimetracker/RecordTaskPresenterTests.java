@@ -4,7 +4,7 @@ import com.melean.taskstimetracker.data.models.EmployeeModel;
 import com.melean.taskstimetracker.data.models.TaskEntityModel;
 import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.data.repositories.ITaskRepository;
-import com.melean.taskstimetracker.record_tasks.Error;
+import com.melean.taskstimetracker.record_tasks.RecordingError;
 import com.melean.taskstimetracker.record_tasks.RecordTaskContract;
 import com.melean.taskstimetracker.record_tasks.RecordTaskPresenter;
 
@@ -51,21 +51,21 @@ public class RecordTaskPresenterTests {
     public void onClickStartRecording_ShouldStartRecording() {
         mRecordTaskPresenter.isRecording = false;
         mRecordTaskPresenter.startRecording();
-        verify(mRecordTasksView).toggleTimeCounter(true);
+        verify(mRecordTasksView).toggleRecording(true);
     }
 
     @Test
     public void onClickStartRecord_ShouldShowError() {
         mRecordTaskPresenter.isRecording = true;
         mRecordTaskPresenter.startRecording();
-        verify(mRecordTasksView).showErrorRecordIntend(Error.NOT_PERMITTED_WHILE_RECORDING);
+        verify(mRecordTasksView).showErrorRecordIntend(RecordingError.NOT_PERMITTED_WHILE_RECORDING);
     }
 
     @Test
     public void onClickStopRecord_ShouldStopRecordingWell() {
         mRecordTaskPresenter.isRecording = true;
-        mRecordTaskPresenter.stopRecording();
-        verify(mRecordTasksView).toggleTimeCounter(false);
+        mRecordTaskPresenter.stopRecording(true);
+        verify(mRecordTasksView).toggleRecording(false);
 
         ArgumentCaptor<TaskEntityModel> taskModelArgument = ArgumentCaptor.forClass(TaskEntityModel.class);
         verify(mRecordTaskRepository).saveTaskEntity(taskModelArgument.capture());
@@ -75,8 +75,8 @@ public class RecordTaskPresenterTests {
     @Test
     public void onClickStopRecord_ShouldShowError() {
         mRecordTaskPresenter.isRecording = false;
-        mRecordTaskPresenter.stopRecording();
-        verify(mRecordTasksView).showErrorRecordIntend(Error.PERMITTED_ONLY_WHILE_RECORDING);
+        mRecordTaskPresenter.stopRecording(true);
+        verify(mRecordTasksView).showErrorRecordIntend(RecordingError.PERMITTED_ONLY_WHILE_RECORDING);
     }
 
     @Test

@@ -21,7 +21,7 @@ import java.util.List;
 
 
 @RunWith(AndroidJUnit4.class)
-public class ShowErrorFromViewTest {
+public class ShowRecordingErrorFromViewTest {
     private List<EmployeeModel> mFakeEmployeeModels;
     private List<TaskModel> mFakeTaskModels;
     private Resources mResources;

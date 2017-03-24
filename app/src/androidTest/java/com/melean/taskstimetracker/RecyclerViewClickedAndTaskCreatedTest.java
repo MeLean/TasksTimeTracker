@@ -45,7 +45,7 @@ public class RecyclerViewClickedAndTaskCreatedTest {
     public void setUp() {
         mFakeTaskModels = new ArrayList<>();
         mFakeEmployeeModels = new ArrayList<>();
-        TestsFaker.fillUpWithFakeData(mFakeTaskModels, mFakeEmployeeModels, 12);
+        TestsFaker.fillUpWithFakeData(mFakeTaskModels, mFakeEmployeeModels, 2);
     }
 
     @Test

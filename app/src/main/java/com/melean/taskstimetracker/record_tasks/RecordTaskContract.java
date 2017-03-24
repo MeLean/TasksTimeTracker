@@ -12,9 +12,9 @@ public interface RecordTaskContract {
 
         void showEmployeesList(List<EmployeeModel> employeesNames);
 
-        void showErrorRecordIntend(Error error);
+        void showErrorRecordIntend(RecordingError recordingError);
 
-        void toggleTimeCounter(boolean isStarted);
+        void toggleRecording(boolean isInterrupted);
 
         TaskEntityModel getTaskModel();
     }
@@ -26,6 +26,6 @@ public interface RecordTaskContract {
 
         void startRecording();
 
-        void stopRecording();
+        void stopRecording(boolean isInterrupted);
     }
 }

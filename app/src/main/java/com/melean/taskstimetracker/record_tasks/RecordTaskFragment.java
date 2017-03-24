@@ -34,6 +34,7 @@ import java.util.Locale;
 
 public class RecordTaskFragment extends Fragment implements RecordTaskContract.View {
     public static final String TAG = "com.melean.taskstimetracker.recordTasks.recordtaskfragment";
+
     private RecordTaskPresenter mPresenter;
     private Chronometer mTimer;
     private RecyclerView mTasksRecycler, mEmployeesRecycler;
@@ -86,9 +87,9 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
     }
 
     @Override
-    public void showErrorRecordIntend(Error error) {
+    public void showErrorRecordIntend(RecordingError recordingError) {
         String message;
-        switch (error) {
+        switch (recordingError) {
             case NOT_FULL_SELECTION:
                 message = getString(R.string.error_not_full_selection);
                 break;
@@ -108,8 +109,24 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
     }
 
     @Override
-    public void toggleTimeCounter(boolean isStarted) {
+    public void toggleRecording(boolean isInterrupted) {
+        FloatingActionButton fabRecord = (FloatingActionButton) getActivity().findViewById(R.id.fab_record);
+        FloatingActionButton pauseBtn = (FloatingActionButton) getActivity().findViewById(R.id.fab_pause);
+        String fabRecordContentDescription = fabRecord.getContentDescription().toString();
 
+        if (getString(R.string.start).equals(fabRecordContentDescription)) {
+            startTimer(mTimer);
+            pauseBtn.setVisibility(View.VISIBLE);
+            fabRecord.setImageResource(android.R.drawable.ic_menu_save);
+            fabRecord.setContentDescription(getString(R.string.save));
+
+        } else {
+            stopTimer(mTimer);
+            pauseBtn.setVisibility(View.GONE);
+            fabRecord.setImageResource(android.R.drawable.ic_media_play);
+            fabRecord.setContentDescription(getString(R.string.start));
+            isTaskInterrupted = isInterrupted;
+        }
     }
 
     @Override
@@ -172,21 +189,7 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
     }
 
     void toggleRecording(FloatingActionButton pauseBtn, FloatingActionButton fabRecord, boolean isInterrupted) {
-        String fabRecordContentDescription = fabRecord.getContentDescription().toString();
 
-
-        if (getString(R.string.start).equals(fabRecordContentDescription)) {
-            startTimer(mTimer);
-            pauseBtn.setVisibility(View.VISIBLE);
-            fabRecord.setImageResource(android.R.drawable.ic_menu_save);
-            fabRecord.setContentDescription(getString(R.string.save));
-        } else {
-            stopTimer(mTimer);
-            pauseBtn.setVisibility(View.GONE);
-            fabRecord.setImageResource(android.R.drawable.ic_media_play);
-            fabRecord.setContentDescription(getString(R.string.start));
-            isTaskInterrupted = isInterrupted;
-        }
     }
 
     private void startTimer(Chronometer timer) {
@@ -212,5 +215,9 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
             return mEmployeeAdapter.getLastSelectedView();
         }
         return null;
+    }
+
+    public RecordTaskPresenter getPresenter() {
+        return mPresenter;
     }
 }

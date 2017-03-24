@@ -20,6 +20,6 @@
     <string name="error_not_full_selection">Employee and Task must be selected!</string>
     <string name="error_not_permitted_until_recording">Action is not permitted while recording!</string>
     <string name="error_permitted_only_while_recording">Action is permitted only while recording!</string>
-    <string name="error_unknown">Unknown error occurred!</string>
+    <string name="error_unknown">Unknown recordingError occurred!</string>
 
 </resources>
