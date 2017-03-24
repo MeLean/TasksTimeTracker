@@ -53,6 +53,7 @@ dependencies {
     compile "com.android.support:design:$rootProject.ext.supportLibsVersion"
     compile "com.android.support:support-v4:$rootProject.ext.supportLibsVersion"
     compile "com.android.support:recyclerview-v7:$rootProject.ext.supportLibsVersion"
-    compile 'org.jetbrains:annotations-java5:15.0'
 
+    compile 'org.jetbrains:annotations-java5:15.0'
+    compile 'com.android.support:support-v4:24.2.1'
 }
