@@ -7,7 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.melean.taskstimetracker.data.models.EmployeeModel;
 import com.melean.taskstimetracker.data.models.TaskModel;
-import com.melean.taskstimetracker.record_tasks.RecordTaskActivity;
+import com.melean.taskstimetracker.ui.activities.MainScreenActivity;
 import com.melean.taskstimetracker.recycler_view_assertion_utils.TestUtils;
 import com.melean.taskstimetracker.recycler_view_assertion_utils.TestsFaker;
 
@@ -21,13 +21,13 @@ import java.util.List;
 
 
 @RunWith(AndroidJUnit4.class)
-public class ShowRecordingErrorFromViewTest {
+public class ShowApplicationErrorFromViewTest {
     private List<EmployeeModel> mFakeEmployeeModels;
     private List<TaskModel> mFakeTaskModels;
     private Resources mResources;
     @Rule
-    public ActivityTestRule<RecordTaskActivity> mActivityRule =
-            new ActivityTestRule<>(RecordTaskActivity.class, true, true);
+    public ActivityTestRule<MainScreenActivity> mActivityRule =
+            new ActivityTestRule<>(MainScreenActivity.class, true, true);
 
     @Before
     public void setUp(){

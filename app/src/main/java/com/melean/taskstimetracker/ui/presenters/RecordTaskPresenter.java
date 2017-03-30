@@ -1,8 +1,10 @@
-package com.melean.taskstimetracker.record_tasks;
+package com.melean.taskstimetracker.ui.presenters;
 
 import com.melean.taskstimetracker.data.models.EmployeeModel;
 import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.data.repositories.ITaskRepository;
+import com.melean.taskstimetracker.ui.enums.ApplicationError;
+import com.melean.taskstimetracker.ui.interfaces.RecordTaskContract;
 
 import java.util.List;
 
@@ -44,7 +46,7 @@ public class RecordTaskPresenter implements RecordTaskContract.UserActionsListen
             recordTaskView.toggleRecording(false);
             isRecording = true;
         } else {
-            recordTaskView.showErrorRecordIntend(RecordingError.NOT_PERMITTED_WHILE_RECORDING);
+            recordTaskView.showErrorRecordIntend(ApplicationError.NOT_PERMITTED_WHILE_RECORDING);
         }
 
     }
@@ -56,7 +58,7 @@ public class RecordTaskPresenter implements RecordTaskContract.UserActionsListen
             isRecording = false;
             taskRepository.saveTaskEntity(recordTaskView.getTaskModel());
         } else {
-            recordTaskView.showErrorRecordIntend(RecordingError.PERMITTED_ONLY_WHILE_RECORDING);
+            recordTaskView.showErrorRecordIntend(ApplicationError.PERMITTED_ONLY_WHILE_RECORDING);
         }
     }
 }

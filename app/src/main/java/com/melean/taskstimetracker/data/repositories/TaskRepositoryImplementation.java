@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import io.realm.RealmObject;
 import io.realm.exceptions.RealmException;
 
 public class TaskRepositoryImplementation implements ITaskRepository{
@@ -46,6 +47,12 @@ public class TaskRepositoryImplementation implements ITaskRepository{
                 throw new RealmException("More than one entity found!");
             }
         }
+    }
+
+
+    @Override
+    public void saveEmployee(EmployeeModel employeeModel) {
+        mRealmDatabase.add(EmployeeRealmObject.from(employeeModel));
     }
 
     @Override

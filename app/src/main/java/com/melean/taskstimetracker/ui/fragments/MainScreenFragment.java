@@ -1,4 +1,4 @@
-package com.melean.taskstimetracker.record_tasks;
+package com.melean.taskstimetracker.ui.fragments;
 
 
 import android.os.SystemClock;
@@ -23,19 +23,22 @@ import com.melean.taskstimetracker.data.models.TaskEntityModel;
 import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.data.repositories.ITaskRepository;
 import com.melean.taskstimetracker.data.repositories.TaskRepositoryImplementation;
+import com.melean.taskstimetracker.ui.interfaces.RecordTaskContract;
+import com.melean.taskstimetracker.ui.presenters.RecordTaskPresenter;
+import com.melean.taskstimetracker.ui.enums.ApplicationError;
 import com.melean.taskstimetracker.ui.adapters.BaseRecyclerAdapter;
 import com.melean.taskstimetracker.ui.adapters.EmployeeAdapter;
 import com.melean.taskstimetracker.ui.adapters.TasksAdapter;
-import com.melean.taskstimetracker.ui.dialogs.ErrorDialogFragment;
+import com.melean.taskstimetracker.ui.fragments.dialogs.ErrorDialogFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-public class RecordTaskFragment extends Fragment implements RecordTaskContract.View {
+public class MainScreenFragment extends Fragment implements RecordTaskContract.View {
     public static final String TAG = "com.melean.taskstimetracker.recordTasks.recordtaskfragment";
 
-    private RecordTaskPresenter mPresenter;
+    private RecordTaskPresenter mRecordTaskPresenter;
     private Chronometer mTimer;
     private RecyclerView mTasksRecycler, mEmployeesRecycler;
     private BaseRecyclerAdapter mTaskAdapter, mEmployeeAdapter;
@@ -43,12 +46,12 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
     private long mSecondsWorked = 0;
     private boolean isTaskInterrupted = false;
 
-    public RecordTaskFragment() {
+    public MainScreenFragment() {
         // Required empty public constructor
     }
 
-    public static RecordTaskFragment getNewInstance() {
-        return new RecordTaskFragment();
+    public static MainScreenFragment getNewInstance() {
+        return new MainScreenFragment();
     }
 
     @Override
@@ -58,14 +61,14 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
         View view = inflater.inflate(R.layout.fragment_record_task, container, false);
         ITaskRepository repository =
                 new TaskRepositoryImplementation(new RealmDatabase(getContext()));
-        mPresenter = new RecordTaskPresenter(this, repository);
+        mRecordTaskPresenter = new RecordTaskPresenter(this, repository);
         mTimer = (Chronometer) view.findViewById(R.id.timer);
         mTasksRecycler = (RecyclerView) view.findViewById(R.id.tasks_list);
         mEmployeesRecycler = (RecyclerView) view.findViewById(R.id.employees_list);
         mNoTasks = (TextView) view.findViewById(R.id.no_tasks);
         mNoEmployees = (TextView) view.findViewById(R.id.no_employees);
-        mPresenter.loadTasks();
-        mPresenter.loadEmployees();
+        mRecordTaskPresenter.loadTasks();
+        mRecordTaskPresenter.loadEmployees();
 
         return view;
     }
@@ -87,9 +90,9 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
     }
 
     @Override
-    public void showErrorRecordIntend(RecordingError recordingError) {
+    public void showErrorRecordIntend(ApplicationError applicationError) {
         String message;
-        switch (recordingError) {
+        switch (applicationError) {
             case NOT_FULL_SELECTION:
                 message = getString(R.string.error_not_full_selection);
                 break;
@@ -201,14 +204,14 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
         mSecondsWorked = (SystemClock.elapsedRealtime() - timer.getBase()) / 1000;
     }
 
-    View getSelectedTask() {
+    public View getSelectedTask() {
         if (mTaskAdapter != null) {
             return mTaskAdapter.getLastSelectedView();
         }
         return null;
     }
 
-    View getSelectedEmployee() {
+    public View getSelectedEmployee() {
         if (mEmployeeAdapter != null) {
             return mEmployeeAdapter.getLastSelectedView();
         }
@@ -216,6 +219,6 @@ public class RecordTaskFragment extends Fragment implements RecordTaskContract.V
     }
 
     public RecordTaskPresenter getPresenter() {
-        return mPresenter;
+        return mRecordTaskPresenter;
     }
 }

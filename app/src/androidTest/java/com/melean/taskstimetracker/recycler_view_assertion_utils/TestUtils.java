@@ -14,6 +14,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
@@ -79,6 +80,15 @@ public class TestUtils {
         }
 
         onView(withId(id)).check(displayedAssertion);
+    }
+
+    public static void assertIsViewDisplayed(String contentDescription, boolean shouldBeDisplayed){
+        ViewAssertion displayedAssertion = matches(not(isDisplayed()));
+        if (shouldBeDisplayed){
+            displayedAssertion = matches(isDisplayed());
+        }
+
+        onView(withContentDescription(contentDescription)).check(displayedAssertion);
     }
 
     public static void assertItemHasViewWithText(int recyclerViewId, int latClickedPosition, String expectedText) {

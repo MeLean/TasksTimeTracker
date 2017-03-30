@@ -11,8 +11,8 @@ import com.melean.taskstimetracker.data.models.TaskEntityModel;
 import com.melean.taskstimetracker.recycler_view_assertion_utils.RecyclerViewItemCountAssertion;
 import com.melean.taskstimetracker.recycler_view_assertion_utils.TestUtils;
 import com.melean.taskstimetracker.data.models.TaskModel;
-import com.melean.taskstimetracker.record_tasks.RecordTaskActivity;
-import com.melean.taskstimetracker.record_tasks.RecordTaskFragment;
+import com.melean.taskstimetracker.ui.activities.MainScreenActivity;
+import com.melean.taskstimetracker.ui.fragments.MainScreenFragment;
 import com.melean.taskstimetracker.recycler_view_assertion_utils.TestsFaker;
 
 import junit.framework.AssertionFailedError;
@@ -35,8 +35,8 @@ public class RecyclerViewClickedAndTaskCreatedTest {
     private TaskEntityModel mCreatedTaskEntity;
 
     @Rule
-    public ActivityTestRule<RecordTaskActivity> mActivityRule =
-            new ActivityTestRule<>(RecordTaskActivity.class, true, true);
+    public ActivityTestRule<MainScreenActivity> mActivityRule =
+            new ActivityTestRule<>(MainScreenActivity.class, true, true);
 
     @Rule
     public UiThreadTestRule uiThreadTestRule = new UiThreadTestRule();
@@ -51,7 +51,7 @@ public class RecyclerViewClickedAndTaskCreatedTest {
     @Test
     @LargeTest
     public void CreateAndSaveTaskEntity() throws Throwable {
-        final RecordTaskActivity  activity = mActivityRule.getActivity();
+        final MainScreenActivity activity = mActivityRule.getActivity();
         TestUtils.UnlockAndWakeUpDeviceOnUi(activity);
 
         TestsFaker.launchRecordFragmentFromUi(activity, mFakeTaskModels, mFakeEmployeeModels);
@@ -80,10 +80,10 @@ public class RecyclerViewClickedAndTaskCreatedTest {
         uiThreadTestRule.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                RecordTaskActivity activity = mActivityRule.getActivity();
+                MainScreenActivity activity = mActivityRule.getActivity();
                 FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                RecordTaskFragment fragment =
-                        (RecordTaskFragment) fragmentManager.findFragmentByTag(RecordTaskFragment.TAG);
+                MainScreenFragment fragment =
+                        (MainScreenFragment) fragmentManager.findFragmentByTag(MainScreenFragment.TAG);
                 setTaskEntity(fragment.getTaskModel());
             }
         });

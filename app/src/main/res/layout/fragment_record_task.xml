@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.melean.taskstimetracker.record_tasks.RecordTaskFragment">
+    tools:context=".ui.fragments.MainScreenFragment">
 
     <Chronometer
         android:id="@+id/timer"
@@ -59,7 +59,7 @@
             android:layout_gravity="top|center"
             >
             <Button
-                android:id="@+id/btn_add_emp"
+                android:id="@+id/btn_add_employee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/add_employee"

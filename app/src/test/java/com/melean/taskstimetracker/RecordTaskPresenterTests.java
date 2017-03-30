@@ -4,9 +4,9 @@ import com.melean.taskstimetracker.data.models.EmployeeModel;
 import com.melean.taskstimetracker.data.models.TaskEntityModel;
 import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.data.repositories.ITaskRepository;
-import com.melean.taskstimetracker.record_tasks.RecordingError;
-import com.melean.taskstimetracker.record_tasks.RecordTaskContract;
-import com.melean.taskstimetracker.record_tasks.RecordTaskPresenter;
+import com.melean.taskstimetracker.ui.enums.ApplicationError;
+import com.melean.taskstimetracker.ui.interfaces.RecordTaskContract;
+import com.melean.taskstimetracker.ui.presenters.RecordTaskPresenter;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -58,7 +58,7 @@ public class RecordTaskPresenterTests {
     public void onClickStartRecord_ShouldShowError() {
         mRecordTaskPresenter.isRecording = true;
         mRecordTaskPresenter.startRecording();
-        verify(mRecordTasksView).showErrorRecordIntend(RecordingError.NOT_PERMITTED_WHILE_RECORDING);
+        verify(mRecordTasksView).showErrorRecordIntend(ApplicationError.NOT_PERMITTED_WHILE_RECORDING);
     }
 
     @Test
@@ -76,7 +76,7 @@ public class RecordTaskPresenterTests {
     public void onClickStopRecord_ShouldShowError() {
         mRecordTaskPresenter.isRecording = false;
         mRecordTaskPresenter.stopRecording(true);
-        verify(mRecordTasksView).showErrorRecordIntend(RecordingError.PERMITTED_ONLY_WHILE_RECORDING);
+        verify(mRecordTasksView).showErrorRecordIntend(ApplicationError.PERMITTED_ONLY_WHILE_RECORDING);
     }
 
     @Test

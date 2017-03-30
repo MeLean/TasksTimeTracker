@@ -1,4 +1,4 @@
-package com.melean.taskstimetracker.record_tasks;
+package com.melean.taskstimetracker.ui.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -9,9 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.melean.taskstimetracker.R;
+import com.melean.taskstimetracker.ui.fragments.MainScreenFragment;
+import com.melean.taskstimetracker.ui.presenters.RecordTaskPresenter;
+import com.melean.taskstimetracker.ui.enums.ApplicationError;
 
-public class RecordTaskActivity extends AppCompatActivity implements View.OnClickListener {
-    private RecordTaskFragment mFragment;
+public class MainScreenActivity extends AppCompatActivity implements View.OnClickListener {
+    private MainScreenFragment mFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +54,7 @@ public class RecordTaskActivity extends AppCompatActivity implements View.OnClic
                 if (isItemsSelected()){
                     presenter.startRecording();
                 }else{
-                    mFragment.showErrorRecordIntend(RecordingError.NOT_FULL_SELECTION);
+                    mFragment.showErrorRecordIntend(ApplicationError.NOT_FULL_SELECTION);
                 }
             }
         }else if(id == R.id.fab_pause){
@@ -67,14 +70,14 @@ public class RecordTaskActivity extends AppCompatActivity implements View.OnClic
     //todo manage saved instance
     public void initFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        mFragment = (RecordTaskFragment) fragmentManager.findFragmentByTag(RecordTaskFragment.TAG);
+        mFragment = (MainScreenFragment) fragmentManager.findFragmentByTag(MainScreenFragment.TAG);
 
         if(mFragment == null){
-            mFragment = RecordTaskFragment.getNewInstance();
+            mFragment = MainScreenFragment.getNewInstance();
         }
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.frame_container, mFragment, RecordTaskFragment.TAG);
+        transaction.replace(R.id.frame_container, mFragment, MainScreenFragment.TAG);
         transaction.commitAllowingStateLoss();
     }
 }

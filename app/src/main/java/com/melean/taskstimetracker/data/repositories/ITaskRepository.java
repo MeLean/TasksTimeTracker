@@ -9,6 +9,8 @@ import com.melean.taskstimetracker.data.models.TaskModel;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import io.realm.RealmObject;
+
 public interface ITaskRepository {
 
     interface GetAllTaskEntitiesCallback {
@@ -19,7 +21,6 @@ public interface ITaskRepository {
         void onTaskEntityLoaded(TaskEntityModel taskEntityModel);
     }
 
-
     interface LoadTasksCallback {
         void onTasksLoaded(List<TaskModel> tasks);
     }
@@ -28,13 +29,15 @@ public interface ITaskRepository {
         void onEmployeesLoaded(List<EmployeeModel> employees);
     }
 
-    void getAllTaskEntities(@NonNull GetAllTaskEntitiesCallback callback);
-
-    void getTaskEntity(int taskId, @NonNull GetTaskEntityCallback callback);
-
     void saveTaskEntity(@NonNull TaskEntityModel task);
 
     void saveAllTaskEntities(List<TaskEntityModel> tasks);
+
+    void saveEmployee(EmployeeModel employeeModel);
+
+    void getAllTaskEntities(@NonNull GetAllTaskEntitiesCallback callback);
+
+    void getTaskEntity(int taskId, @NonNull GetTaskEntityCallback callback);
 
     void getTasks(@NonNull LoadTasksCallback callback);
 

@@ -1,4 +1,4 @@
-package com.melean.taskstimetracker.ui.dialogs;
+package com.melean.taskstimetracker.ui.fragments.dialogs;
 
 
 import android.app.Activity;
@@ -16,8 +16,8 @@ import android.widget.TextView;
 import com.melean.taskstimetracker.R;
 
 public class ErrorDialogFragment extends DialogFragment {
-    public static final String TAG = "com.melean.taskstimetracker.ui.dialogs.ErrorDialogFragment";
-    private static final String ARG_MESSAGE = "com.melean.taskstimetracker.ui.dialogs.message";
+    public static final String TAG = "com.melean.taskstimetracker.ui.fragments.dialogs.ErrorDialogFragment";
+    private static final String ARG_MESSAGE = "com.melean.taskstimetracker.ui.fragments.dialogs.message";
 
     private String mMessage;
 
