@@ -23,6 +23,7 @@ import com.melean.taskstimetracker.data.models.TaskEntityModel;
 import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.data.repositories.ITaskRepository;
 import com.melean.taskstimetracker.data.repositories.TaskRepositoryImplementation;
+import com.melean.taskstimetracker.ui.fragments.dialogs.AddEmployeeDialogFragment;
 import com.melean.taskstimetracker.ui.interfaces.RecordTaskContract;
 import com.melean.taskstimetracker.ui.presenters.RecordTaskPresenter;
 import com.melean.taskstimetracker.ui.enums.ApplicationError;
@@ -35,7 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-public class MainScreenFragment extends Fragment implements RecordTaskContract.View {
+public class MainScreenFragment extends Fragment implements RecordTaskContract.View, View.OnClickListener {
     public static final String TAG = "com.melean.taskstimetracker.recordTasks.recordtaskfragment";
 
     private RecordTaskPresenter mRecordTaskPresenter;
@@ -69,7 +70,7 @@ public class MainScreenFragment extends Fragment implements RecordTaskContract.V
         mNoEmployees = (TextView) view.findViewById(R.id.no_employees);
         mRecordTaskPresenter.loadTasks();
         mRecordTaskPresenter.loadEmployees();
-
+        view.findViewById(R.id.btn_add_employee).setOnClickListener(this);
         return view;
     }
 
@@ -220,5 +221,14 @@ public class MainScreenFragment extends Fragment implements RecordTaskContract.V
 
     public RecordTaskPresenter getPresenter() {
         return mRecordTaskPresenter;
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        if(id == R.id.btn_add_employee){
+            DialogFragment dialog = new AddEmployeeDialogFragment();
+            dialog.show(getActivity().getSupportFragmentManager(), AddEmployeeDialogFragment.TAG);
+        }
     }
 }

@@ -35,6 +35,8 @@ public interface ITaskRepository {
 
     void saveEmployee(EmployeeModel employeeModel);
 
+    void saveTask(TaskModel taskModel);
+
     void getAllTaskEntities(@NonNull GetAllTaskEntitiesCallback callback);
 
     void getTaskEntity(int taskId, @NonNull GetTaskEntityCallback callback);

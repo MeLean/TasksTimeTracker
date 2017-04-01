@@ -25,11 +25,11 @@ public class AddDataPresenter implements AddDataContract.UserActionsListener{
 
     @Override
     public void saveEmployee(EmployeeModel employee) {
-
+        taskRepository.saveEmployee(employee);
     }
 
     @Override
     public void saveTask(TaskModel task) {
-
+        taskRepository.saveTask(task);
     }
 }

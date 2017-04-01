@@ -11,6 +11,7 @@ import com.melean.taskstimetracker.R;
 
 public class AddEmployeeDialogFragment extends DialogFragment {
 
+    public static final String TAG = "com.melean.taskstimetracker.ui.fragments.dialogs.add_employee_fragment";
 
     public AddEmployeeDialogFragment() {
         // Required empty public constructor

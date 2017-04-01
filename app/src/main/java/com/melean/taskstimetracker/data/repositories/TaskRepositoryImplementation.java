@@ -56,6 +56,11 @@ public class TaskRepositoryImplementation implements ITaskRepository{
     }
 
     @Override
+    public void saveTask(TaskModel taskModel) {
+        mRealmDatabase.add(TaskRealmObject.from(taskModel));
+    }
+
+    @Override
     public void saveTaskEntity(@NonNull TaskEntityModel task) {
         mRealmDatabase.add(TaskEntityRealmObject.makeFrom(task));
     }
