@@ -1,2 +1,2 @@
 # TasksTimeTracker
-TDD projegt. Made for employee`s tascks time taking.
+TDD project. Made for employee's tasks time taking.
