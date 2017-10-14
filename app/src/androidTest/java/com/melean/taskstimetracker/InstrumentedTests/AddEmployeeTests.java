@@ -27,5 +27,6 @@ public class AddEmployeeTests {
 
         TestUtils.performClickOnViewWithId(R.id.btn_add_employee);
         TestUtils.assertIsViewDisplayed(R.id.add_employee_fragment,true);
+        TestUtils.typeTextInView(R.id.et_data_input, "Test Employee 1");
     }
 }

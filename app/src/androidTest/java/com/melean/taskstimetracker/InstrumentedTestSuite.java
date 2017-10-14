@@ -1,7 +1,5 @@
 package com.melean.taskstimetracker;
 
-
-import com.melean.taskstimetracker.InstrumentedTests.AddEmployeeTests;
 import com.melean.taskstimetracker.InstrumentedTests.ButtonsStartStopTests;
 import com.melean.taskstimetracker.InstrumentedTests.RecyclerViewClickedAndTaskCreatedTest;
 import com.melean.taskstimetracker.InstrumentedTests.ShowApplicationErrorFromViewTest;

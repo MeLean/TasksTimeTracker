@@ -14,6 +14,8 @@ public interface AddDataContract {
         void updateEmployees(EmployeeModel employee);
 
         void updateTasks(TaskModel task);
+
+        void onDataEntered(Object obj);
     }
 
     interface UserActionsListener {

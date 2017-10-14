@@ -5,4 +5,5 @@ public class Preferences {
 
     public static final int TASK_NAME = 1;
     public static final int EMPLOYEE_NAME = 2;
+    public static String EmployeeNameKey = "com.melean.taskstimetracker.constants.employee_name_key";
 }

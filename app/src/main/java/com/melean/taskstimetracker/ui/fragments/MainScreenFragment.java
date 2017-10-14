@@ -1,6 +1,5 @@
 package com.melean.taskstimetracker.ui.fragments;
 
-
 import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
@@ -24,7 +23,9 @@ import com.melean.taskstimetracker.data.models.TaskModel;
 import com.melean.taskstimetracker.data.repositories.ITaskRepository;
 import com.melean.taskstimetracker.data.repositories.TaskRepositoryImplementation;
 import com.melean.taskstimetracker.ui.fragments.dialogs.AddEmployeeDialogFragment;
+import com.melean.taskstimetracker.ui.interfaces.AddDataContract;
 import com.melean.taskstimetracker.ui.interfaces.RecordTaskContract;
+import com.melean.taskstimetracker.ui.presenters.AddDataPresenter;
 import com.melean.taskstimetracker.ui.presenters.RecordTaskPresenter;
 import com.melean.taskstimetracker.ui.enums.ApplicationError;
 import com.melean.taskstimetracker.ui.adapters.BaseRecyclerAdapter;
@@ -36,10 +37,11 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-public class MainScreenFragment extends Fragment implements RecordTaskContract.View, View.OnClickListener {
+public class MainScreenFragment extends Fragment implements RecordTaskContract.View, AddDataContract.View, View.OnClickListener {
     public static final String TAG = "com.melean.taskstimetracker.recordTasks.recordtaskfragment";
 
     private RecordTaskPresenter mRecordTaskPresenter;
+    private AddDataPresenter mAddDataPresenter;
     private Chronometer mTimer;
     private RecyclerView mTasksRecycler, mEmployeesRecycler;
     private BaseRecyclerAdapter mTaskAdapter, mEmployeeAdapter;
@@ -63,6 +65,7 @@ public class MainScreenFragment extends Fragment implements RecordTaskContract.V
         ITaskRepository repository =
                 new TaskRepositoryImplementation(new RealmDatabase(getContext()));
         mRecordTaskPresenter = new RecordTaskPresenter(this, repository);
+        mAddDataPresenter = new AddDataPresenter(this, repository);
         mTimer = (Chronometer) view.findViewById(R.id.timer);
         mTasksRecycler = (RecyclerView) view.findViewById(R.id.tasks_list);
         mEmployeesRecycler = (RecyclerView) view.findViewById(R.id.employees_list);
@@ -190,10 +193,6 @@ public class MainScreenFragment extends Fragment implements RecordTaskContract.V
         noItemsView.setVisibility(View.GONE);
     }
 
-    void toggleRecording(FloatingActionButton pauseBtn, FloatingActionButton fabRecord, boolean isInterrupted) {
-
-    }
-
     private void startTimer(Chronometer timer) {
         timer.setBase(SystemClock.elapsedRealtime());
         timer.start();
@@ -227,8 +226,42 @@ public class MainScreenFragment extends Fragment implements RecordTaskContract.V
     public void onClick(View view) {
         int id = view.getId();
         if(id == R.id.btn_add_employee){
-            DialogFragment dialog = new AddEmployeeDialogFragment();
-            dialog.show(getActivity().getSupportFragmentManager(), AddEmployeeDialogFragment.TAG);
+            showAddEmployeeView();
+        }
+    }
+
+    @Override
+    public void showAddEmployeeView() {
+        DialogFragment dialog = new AddEmployeeDialogFragment();
+        dialog.show(getActivity().getSupportFragmentManager(), AddEmployeeDialogFragment.TAG);
+    }
+
+    @Override
+    public void showAddTaskView() {
+
+    }
+
+    @Override
+    public void showErrorAdding() {
+
+    }
+
+    @Override
+    public void updateEmployees(EmployeeModel employee) {
+
+    }
+
+    @Override
+    public void updateTasks(TaskModel task) {
+
+    }
+
+    @Override
+    public void onDataEntered(Object obj) {
+        if(obj instanceof EmployeeModel){
+            mAddDataPresenter.saveEmployee((EmployeeModel)obj);
+        }else if(obj instanceof TaskEntityModel){
+            mAddDataPresenter.saveTask((TaskModel)obj);
         }
     }
 }
