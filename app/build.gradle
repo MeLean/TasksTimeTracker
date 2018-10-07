@@ -6,8 +6,8 @@ apply plugin: 'realm-android'
 
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "26.0.1"
+    compileSdkVersion 28
+    buildToolsVersion '28.0.2'
 
     dataBinding {
         enabled = true
@@ -15,8 +15,8 @@ android {
 
     defaultConfig {
         applicationId "com.melean.taskstimetracker"
-        minSdkVersion 15
-        targetSdkVersion 25
+        minSdkVersion 21
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 
@@ -35,43 +35,37 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    androidTestImplementation "junit:junit:$rootProject.ext.junitVersion"
+    androidTestImplementation "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
+    androidTestImplementation "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
+    androidTestImplementation "org.powermock:powermock-module-junit4:$rootProject.ext.powerMockito"
+    androidTestImplementation "org.powermock:powermock-api-mockito:$rootProject.ext.powerMockito"
 
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
-    testCompile "junit:junit:$rootProject.ext.junitVersion"
-    testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
-    testCompile "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
-    testCompile "org.powermock:powermock-module-junit4:$rootProject.ext.powerMockito"
-    testCompile "org.powermock:powermock-api-mockito:$rootProject.ext.powerMockito"
     // Android Testing Support Library's runner and rules
-    androidTestCompile "com.android.support.test:runner:$rootProject.ext.runnerVersion"
-    androidTestCompile "com.android.support.test:rules:$rootProject.ext.rulesVersion"
+    androidTestImplementation "com.android.support.test:runner:$rootProject.ext.runnerVersion"
+    androidTestImplementation "com.android.support.test:rules:$rootProject.ext.rulesVersion"
 
     // Espresso UI Testing dependencies.
-    androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
-    androidTestCompile("com.android.support.test.espresso:espresso-contrib:$rootProject.ext.espressoVersion") {
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
+    androidTestImplementation("com.android.support.test.espresso:espresso-contrib:$rootProject.ext.espressoVersion") {
         // Necessary to avoid version conflicts
         exclude group: 'com.android.support', module: 'appcompat'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude module: 'recyclerview-v7'
     }
-
-    androidTestCompile "com.android.support:support-annotations:$rootProject.ext.supportLibsVersion"
-    androidTestCompile "com.android.support:design:$rootProject.ext.supportLibsVersion"
-    androidTestCompile "com.android.support:support-v4:$rootProject.ext.supportLibsVersion"
-
-
-    compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibsVersion"
-    compile "com.android.support:design:$rootProject.ext.supportLibsVersion"
-    compile "com.android.support:support-v4:$rootProject.ext.supportLibsVersion"
-    compile "com.android.support:recyclerview-v7:$rootProject.ext.supportLibsVersion"
-    compile "com.android.support:support-v4:$rootProject.ext.supportLibsVersion"
-
-    compile "org.jetbrains:annotations-java5:$rootProject.ext.java5Version"
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-
+    androidTestImplementation "com.android.support:support-annotations:$rootProject.ext.supportLibsVersion"
+    androidTestImplementation "com.android.support:design:$rootProject.ext.supportLibsVersion"
+    androidTestImplementation "com.android.support:support-v4:$rootProject.ext.supportLibsVersion"
+    implementation "com.android.support:appcompat-v7:$rootProject.ext.supportLibsVersion"
+    implementation "com.android.support:design:$rootProject.ext.supportLibsVersion"
+    implementation "com.android.support:support-v4:$rootProject.ext.supportLibsVersion"
+    implementation "com.android.support:recyclerview-v7:$rootProject.ext.supportLibsVersion"
+    implementation "com.android.support:support-v4:$rootProject.ext.supportLibsVersion"
+    implementation "org.jetbrains:annotations-java5:$rootProject.ext.java5Version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 repositories {
     mavenCentral()
